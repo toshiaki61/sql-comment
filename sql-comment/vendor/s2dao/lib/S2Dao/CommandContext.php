@@ -46,4 +46,4 @@ interface S2Dao_CommandContext {
 
     public function setEnabled($enabled);
 }
-?>
+

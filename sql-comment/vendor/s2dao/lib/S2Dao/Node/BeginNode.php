@@ -42,4 +42,4 @@ class S2Dao_BeginNode extends S2Dao_ContainerNode {
         }
     }
 }
-?>
+

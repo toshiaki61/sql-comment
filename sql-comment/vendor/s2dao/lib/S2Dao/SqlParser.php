@@ -29,4 +29,4 @@ namespace S2Dao;
 interface S2Dao_SqlParser {
     public function parse();
 }
-?>
+

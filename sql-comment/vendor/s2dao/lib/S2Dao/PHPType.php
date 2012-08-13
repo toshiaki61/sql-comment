@@ -52,4 +52,3 @@ final class S2Dao_PHPType {
         }
     }
 }
-?>

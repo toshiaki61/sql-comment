@@ -81,4 +81,4 @@ class S2Dao_ParenBindVariableNode extends S2Dao_AbstractNode {
         $ctx->addSql(')');
     }
 }
-?>
+

@@ -46,4 +46,4 @@ class S2Dao_AddWhereIfNode extends S2Dao_ContainerNode {
     }
 }
 
-?>
+

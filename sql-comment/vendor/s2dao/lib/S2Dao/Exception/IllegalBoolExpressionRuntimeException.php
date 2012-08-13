@@ -39,4 +39,4 @@ class S2Dao_IllegalBoolExpressionRuntimeException extends S2Container_S2RuntimeE
         return $this->expression;
     }
 }
-?>
+

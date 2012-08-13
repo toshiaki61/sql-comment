@@ -31,4 +31,4 @@ class S2Dao_EndCommentNotFoundRuntimeException extends S2Container_S2RuntimeExce
         parent::__construct('EDAO0007');
     }
 }
-?>
+

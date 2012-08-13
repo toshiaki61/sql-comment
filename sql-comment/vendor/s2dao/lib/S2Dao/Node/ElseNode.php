@@ -36,4 +36,4 @@ class S2Dao_ElseNode extends S2Dao_ContainerNode {
         $ctx->setEnabled(true);
     }
 }
-?>
+

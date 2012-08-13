@@ -44,4 +44,4 @@ interface S2Dao_SqlTokenizer {
     public function skipToken();
     public function skipWhitespace();
 }
-?>
+

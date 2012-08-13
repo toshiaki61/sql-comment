@@ -60,4 +60,4 @@ class S2Dao_EmbeddedValueNode extends S2Dao_AbstractNode {
         }
     }
 }
-?>
+

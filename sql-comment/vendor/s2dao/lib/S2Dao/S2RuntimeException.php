@@ -47,4 +47,4 @@ class S2RuntimeException extends Exception
         parent::__construct($msg);
     }
 }
-?>
+

@@ -45,4 +45,4 @@ class S2Dao_TokenNotClosedRuntimeException extends S2Container_S2RuntimeExceptio
         return $this->sql;
     }
 }
-?>
+

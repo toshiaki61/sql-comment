@@ -257,4 +257,4 @@ class S2Dao_SqlTokenizerImpl implements S2Dao_SqlTokenizer {
         }
     }
 }
-?>
+

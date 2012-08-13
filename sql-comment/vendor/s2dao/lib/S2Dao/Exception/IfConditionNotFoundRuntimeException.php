@@ -31,4 +31,4 @@ class S2Dao_IfConditionNotFoundRuntimeException extends S2Container_S2RuntimeExc
         parent::__construct('EDAO0004');
     }
 }
-?>
+

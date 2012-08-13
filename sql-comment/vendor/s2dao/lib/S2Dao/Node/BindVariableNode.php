@@ -77,4 +77,4 @@ class S2Dao_BindVariableNode extends S2Dao_AbstractNode {
         return $clazz === null || $clazz == gettype(null);
     }
 }
-?>
+

@@ -51,4 +51,4 @@ class S2Dao_PrefixSqlNode extends S2Dao_AbstractNode {
         $ctx->addSql($this->sql);
     }
 }
-?>
+

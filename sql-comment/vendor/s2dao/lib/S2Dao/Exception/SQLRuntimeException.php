@@ -32,4 +32,3 @@ class S2Dao_SQLRuntimeException extends S2Container_S2RuntimeException {
     }
 }
 
-?>
