@@ -22,7 +22,7 @@
 // $Id: $
 //
 namespace S2Dao\Node;
-/*
+/**
  *
  * @author nowel
  * @package org.seasar.s2dao.node

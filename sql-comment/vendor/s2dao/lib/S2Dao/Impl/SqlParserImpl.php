@@ -46,16 +46,16 @@ class S2Dao_SqlParserImpl implements S2Dao_SqlParser {
 
     protected function parseToken() {
         switch ($this->tokenizer->getTokenType()) {
-        case S2Dao_SqlTokenizer::SQL :
+        case S2Dao_SqlTokenizer::SQL:
             $this->parseSql();
             break;
-        case S2Dao_SqlTokenizer::COMMENT :
+        case S2Dao_SqlTokenizer::COMMENT:
             $this->parseComment();
             break;
-        case S2Dao_SqlTokenizer::ELSE_ :
+        case S2Dao_SqlTokenizer::ELSE_:
             $this->parseElse();
             break;
-        case S2Dao_SqlTokenizer::BIND_VARIABLE :
+        case S2Dao_SqlTokenizer::BIND_VARIABLE:
             $this->parseBindVariable();
             break;
         }
@@ -150,10 +150,11 @@ class S2Dao_SqlParserImpl implements S2Dao_SqlParser {
     protected function parseCommentBindVariable() {
         $expr = $this->tokenizer->getToken();
         $s = $this->tokenizer->skipToken();
-        if ($s !== false && ereg('^\(', $s) && ereg('\)$', $s) ) {
+        if ($s !== false && strpos($s, '(') === 0 && substr($s, -1, 1) === ')') {
             $this->peek()->addChild(new S2Dao_ParenBindVariableNode($expr));
-        } else if (ereg('^\$', $expr)) {
-            $this->peek()->addChild(new S2Dao_EmbeddedValueNode(substr($expr, 1)));
+        } else if (strpos($expr, '$') === 0) {
+            $this->peek()
+                    ->addChild(new S2Dao_EmbeddedValueNode(substr($expr, 1)));
         } else {
             $this->peek()->addChild(new S2Dao_BindVariableNode($expr));
         }
@@ -189,14 +190,15 @@ class S2Dao_SqlParserImpl implements S2Dao_SqlParser {
         return false;
     }
 
-    private static function isTargetComment($comment = null) {
-        return $comment !== null &&
-               0 < strlen($comment) &&
-               substr($comment, 0, 1) != null;
+    private static function isTargetComment($comment = null)
+    {
+        return $comment !== null && 0 < strlen($comment)
+                && substr($comment, 0, 1) !== null;
     }
 
-    private static function isIfComment($comment) {
-        return ereg('^IF', $comment);
+    private static function isIfComment($comment)
+    {
+        return strpos($comment, 'IF') === 0;
     }
 
     private static function isBeginComment($content = null) {

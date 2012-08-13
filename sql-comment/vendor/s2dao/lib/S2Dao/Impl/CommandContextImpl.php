@@ -29,79 +29,101 @@ namespace S2Dao\Impl;
 class S2Dao_CommandContextImpl implements S2Dao_CommandContext {
 
     private static $logger = null;
+    /**
+     * @var array
+     */
     private $args;
+    /**
+     * @var array
+     */
     private $argTypes;
     private $sqlBuf = '';
+    /**
+     * @var \SplFixedArray
+     */
     private $bindVariables;
+    /**
+     * @var \SplFixedArray
+     */
     private $bindVariableTypes;
     private $enabled = false;
     private $parent;
 
     public function __construct($parent = null){
         if(self::$logger === null){
-            self::$logger = S2Container_S2Logger::getLogger(get_class($this));
+            //self::$logger = S2Container_S2Logger::getLogger(get_class($this));
         }
-        $this->args = new S2Dao_CaseInsensitiveMap();
-        $this->argTypes = new S2Dao_CaseInsensitiveMap();
+        $this->args = [];
+        $this->argTypes = [];
         $this->sqlBuf = '';
-        $this->bindVariables = new S2Dao_ArrayList();
-        $this->bindVariableTypes = new S2Dao_ArrayList();
+        $this->bindVariables = new \SplFixedArray(100);
+        $this->bindVariableTypes = new \SplFixedArray(100);
         $this->parent = $parent;
         $this->enabled = false;
     }
 
-    public function getArg($name) {
-        if ($this->args->containsKey($name)) {
-            return $this->args->get($name);
+    public function getArg($name)
+    {
+        $case = strtolower($name);
+        if (isset($this->args[$case])) {
+            return $this->args[$case];
         } else if ($this->parent !== null) {
             return $this->parent->getArg($name);
         } else {
-            if ($this->args->size() == 1) {
-                return $this->args->get(0);
+            if (count($this->args) === 1) {
+                return array_pop($this->args);
             }
-            self::$logger->info('Argument(' . $name . ') not found');
+            //self::$logger->info('Argument(' . $name . ') not found');
             return null;
         }
     }
 
-    public function getArgType($name) {
-        if ($this->argTypes->containsKey($name)) {
-            return $this->argTypes->get($name);
+    public function getArgType($name)
+    {
+        $case = strtolower($name);
+        if (isset($this->argTypes[$case])) {
+            return $this->argTypes[$case];
         } else if ($this->parent !== null) {
             return $this->parent->getArgType($name);
         } else {
-            if ($this->argTypes->size() == 1) {
-                return $this->argTypes->get(0);
+            if (count($this->argTypes) === 1) {
+                return array_pop($this->argTypes);
             }
-            self::$logger->info('Argument(' . $name . ') not found');
+            //self::$logger->info('Argument(' . $name . ') not found');
             return null;
         }
     }
 
-    public function addArg($name, $arg, $argType) {
-        $this->args->put($name, $arg);
-        $this->argTypes->put($name, $argType);
+    public function addArg($name, $arg, $argType)
+    {
+        $case = strtolower($name);
+        $this->args[$case] = $arg;
+        $this->argTypes[$case] = $argType;
     }
 
-    public function getSql() {
+    public function getSql()
+    {
         return (string)$this->sqlBuf;
     }
 
-    public function getBindVariables() {
+    public function getBindVariables()
+    {
         return $this->bindVariables->toArray();
     }
 
-    public function getBindVariableTypes() {
+    public function getBindVariableTypes()
+    {
         return $this->bindVariableTypes->toArray();
     }
 
-    public function addSql($sql, $bindVariable = null, $bindVariableType = null) {
+    public function addSql($sql, $bindVariable = null, $bindVariableType = null)
+    {
         if(is_array($bindVariable) && is_array($bindVariableType)){
             $this->sqlBuf .= $sql;
             $c = count($bindVariable);
             for ($i = 0; $i < $c; ++$i) {
-                $this->bindVariables->add($bindVariable[$i]);
-                $this->bindVariableTypes->add($bindVariableType[$i]);
+                $this->bindVariables->offsetSet($i, $bindVariable[$i]);
+                $this->bindVariableTypes->offsetSet($i, $bindVariableType[$i]);
             }
             return $this;
         } else if($bindVariable === null && $bindVariableType === null){
@@ -109,22 +131,24 @@ class S2Dao_CommandContextImpl implements S2Dao_CommandContext {
             return $this;
         } else {
             $this->sqlBuf .= $sql;
-            $this->bindVariables->add($bindVariable);
-            $this->bindVariableTypes->add($bindVariableType);
+            $this->bindVariables->offsetSet(0, $bindVariable);
+            $this->bindVariableTypes->offsetSet(0, $bindVariableType);
             return $this;
         }
     }
 
-    public function isEnabled() {
+    public function isEnabled()
+    {
         return $this->enabled;
     }
 
-    public function setEnabled($enabled) {
+    public function setEnabled($enabled)
+    {
         $this->enabled = $enabled;
     }
 
-    private function isNull($valueType = null){
+    private function isNull($valueType = null)
+    {
         return $valueType === null || $valueType == gettype(null);
     }
 }
-?>
