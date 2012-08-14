@@ -71,21 +71,21 @@ class SqlTokenizerImpl implements \S2Dao\SqlTokenizer {
             return $this->tokenType;
         }
         switch ($this->nextTokenType) {
-        case self::SQL:
-            $this->parseSql();
-            break;
-        case self::COMMENT:
-            $this->parseComment();
-            break;
-        case self::ELSE_:
-            $this->parseElse();
-            break;
-        case self::BIND_VARIABLE:
-            $this->parseBindVariable();
-            break;
-        default:
-            $this->parseEof();
-            break;
+            case self::SQL:
+                $this->parseSql();
+                break;
+            case self::COMMENT:
+                $this->parseComment();
+                break;
+            case self::ELSE_:
+                $this->parseElse();
+                break;
+            case self::BIND_VARIABLE:
+                $this->parseBindVariable();
+                break;
+            default:
+                $this->parseEof();
+                break;
         }
         return $this->tokenType;
     }
@@ -98,15 +98,16 @@ class SqlTokenizerImpl implements \S2Dao\SqlTokenizer {
         $elseCommentLength = -1;
         if ($lineCommentStartPos !== false && 0 <= $lineCommentStartPos) {
             $skipPos = $this->skipWhitespace($lineCommentStartPos + 2);
-            if ($skipPos + 4 < strlen($this->sql)
-                    && 'ELSE' === substr($this->sql, $skipPos, 4)) {
+            if ($skipPos + 4 < strlen($this->sql) && 'ELSE' === substr($this->sql,
+                $skipPos,
+                4)) {
                 $elseCommentStartPos = $lineCommentStartPos;
                 $elseCommentLength = $skipPos + 4 - $lineCommentStartPos;
             }
         }
         $nextStartPos = $this->getNextStartPos($commentStartPos,
-                                               $elseCommentStartPos,
-                                               $bindVariableStartPos);
+                $elseCommentStartPos,
+                $bindVariableStartPos);
 
         if ($nextStartPos === false || $nextStartPos < 0) {
             $this->token = substr($this->sql, $this->position);
@@ -125,8 +126,7 @@ class SqlTokenizerImpl implements \S2Dao\SqlTokenizer {
             } else if ($nextStartPos == $elseCommentStartPos) {
                 $this->nextTokenType = self::ELSE_;
                 $this->position = $elseCommentStartPos + $elseCommentLength + 1;
-            } else if ($bindVariableStartPos !== false &&
-                        $nextStartPos == $bindVariableStartPos) {
+            } else if ($bindVariableStartPos !== false && $nextStartPos == $bindVariableStartPos) {
                 $this->nextTokenType = self::BIND_VARIABLE;
                 $this->position = $bindVariableStartPos;
             }
@@ -136,20 +136,16 @@ class SqlTokenizerImpl implements \S2Dao\SqlTokenizer {
         }
     }
 
-    protected function getNextStartPos($commentStartPos,
-                                       $elseCommentStartPos,
-                                       $bindVariableStartPos) {
+    protected function getNextStartPos($commentStartPos, $elseCommentStartPos, $bindVariableStartPos) {
 
         $nextStartPos = -1;
         if ($commentStartPos !== false && $commentStartPos >= 0) {
             $nextStartPos = $commentStartPos;
         }
-        if ($elseCommentStartPos >= 0
-                && ($nextStartPos < 0 || $elseCommentStartPos < $nextStartPos)) {
+        if ($elseCommentStartPos >= 0 && ($nextStartPos < 0 || $elseCommentStartPos < $nextStartPos)) {
             $nextStartPos = $elseCommentStartPos;
         }
-        if ($bindVariableStartPos !== false && $bindVariableStartPos >= 0
-                && ($nextStartPos < 0 || $bindVariableStartPos < $nextStartPos)) {
+        if ($bindVariableStartPos !== false && $bindVariableStartPos >= 0 && ($nextStartPos < 0 || $bindVariableStartPos < $nextStartPos)) {
             $nextStartPos = $bindVariableStartPos;
         }
         return $nextStartPos;
@@ -165,9 +161,8 @@ class SqlTokenizerImpl implements \S2Dao\SqlTokenizer {
     protected function parseComment() {
         $commentEndPos = strpos($this->sql, '*/', $this->position);
         if ($commentEndPos === false || $commentEndPos < 0) {
-            throw new \S2Dao\TokenNotClosedRuntimeException('*/',
-                                                     substr($this->sql,
-                                                     $this->position));
+            throw new \S2Dao\TokenNotClosedRuntimeException('*/', substr($this->sql,
+                $this->position));
         }
         $endPos = $commentEndPos - $this->position;
         $this->token = substr($this->sql, $this->position, $endPos);
@@ -197,8 +192,9 @@ class SqlTokenizerImpl implements \S2Dao\SqlTokenizer {
 
     public function skipToken() {
         $index = strlen($this->sql);
-        $quote = $this->position < strlen($this->sql) ?
-             substr($this->sql, $this->position, 1) : '';
+        $quote = $this->position < strlen($this->sql) ? substr($this->sql,
+            $this->position,
+            1) : '';
         $quoting = $quote === '\'' || $quote === '(';
         if ($quote === '(') {
             $quote = ')';
@@ -211,17 +207,19 @@ class SqlTokenizerImpl implements \S2Dao\SqlTokenizer {
             if (preg_match('/(\s|,|\)|\()/', $c) && !$quoting) {
                 $index = $i;
                 break;
-            } else if ($c == '/' && ($i + 1) < $len
-                        && substr($this->sql, ($i + 1), 1) == '*') {
+            } else if ($c == '/' && ($i + 1) < $len && substr($this->sql,
+                ($i + 1),
+                1) == '*') {
                 $index = $i;
                 break;
-            } else if ($c == '-' && ($i + 1) < $len
-                        && substr($this->sql, ($i + 1), 1) == '-') {
+            } else if ($c == '-' && ($i + 1) < $len && substr($this->sql,
+                ($i + 1),
+                1) == '-') {
                 $index = $i;
                 break;
-            } else if ($quoting && $quote == '\'' && $c == '\''
-                        && ($len <= ($i + 1) ||
-                            substr($this->sql, ($i + 1), 1) != '\'') ) {
+            } else if ($quoting && $quote == '\'' && $c == '\'' && ($len <= ($i + 1) || substr($this->sql,
+                ($i + 1),
+                1) != '\'')) {
                 $index = $i + 1;
                 break;
             } else if ($quoting && $c == $quote) {
@@ -238,7 +236,7 @@ class SqlTokenizerImpl implements \S2Dao\SqlTokenizer {
     }
 
     public function skipWhitespace($position = null) {
-        if($position === null){
+        if ($position === null) {
             $index = $this->skipWhitespace($this->position);
             $this->token = substr($this->sql, $this->position, $index);
             $this->position = $index;

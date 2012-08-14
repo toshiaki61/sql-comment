@@ -27,23 +27,24 @@ namespace S2Dao\Node;
  * @package org.seasar.s2dao.node
  */
 class AddWhereIfNode extends \S2Dao\Node\ContainerNode {
-    
+
     const pat = '/\s*(order\sby)|$)/i';
-    
+
     public function __construct() {
     }
-    
+
     public function accept(\S2Dao\CommandContext $ctx) {
         $childCtx = new \S2Dao\CommandContextImpl($ctx);
         parent::accept($childCtx);
         if ($childCtx->isEnabled()) {
             $sql = $childCtx->getSql();
-            if(!preg_match(self::pat, $sql)){
+            if (!preg_match(self::pat, $sql)) {
                 $sql .= ' WHERE ' . $sql;
             }
-            $ctx->addSql($sql, $childCtx->getBindVariables(), $childCtx->getBindVariableTypes());
+            $ctx->addSql($sql,
+                    $childCtx->getBindVariables(),
+                    $childCtx->getBindVariableTypes());
         }
     }
 }
-
 

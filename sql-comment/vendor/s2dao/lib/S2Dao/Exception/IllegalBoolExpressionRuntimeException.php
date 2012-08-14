@@ -26,7 +26,8 @@ namespace S2Dao\Exception;
  * @author nowel
  * @package org.seasar.s2dao.exception
  */
-class IllegalBoolExpressionRuntimeException extends \S2Container\Exception\S2RuntimeException {
+class IllegalBoolExpressionRuntimeException extends
+    \S2Container\Exception\S2RuntimeException {
 
     private $expression;
 

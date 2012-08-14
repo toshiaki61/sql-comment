@@ -31,14 +31,14 @@ class BeginNode extends \S2Dao\Node\ContainerNode {
 
     public function __construct() {
     }
-    
+
     public function accept(\S2Dao\CommandContext $ctx) {
         $childCtx = new \S2Dao\CommandContextImpl($ctx);
         parent::accept($childCtx);
         if ($childCtx->isEnabled()) {
             $ctx->addSql($childCtx->getSql(),
-                         $childCtx->getBindVariables(),
-                         $childCtx->getBindVariableTypes());
+                    $childCtx->getBindVariables(),
+                    $childCtx->getBindVariableTypes());
         }
     }
 }

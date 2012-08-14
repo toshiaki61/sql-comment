@@ -22,11 +22,10 @@
 // $Id$
 //
 namespace S2Dao\Node;
-/*
- *
+/**
  * @author nowel
  */
-class S2Dao_IfNode extends S2Dao_ContainerNode {
+class IfNode extends \S2Dao\Node\ContainerNode {
 
     private $expression = '';
     private $parsedExpression = null;
@@ -47,14 +46,16 @@ class S2Dao_IfNode extends S2Dao_ContainerNode {
         return $this->elseNode;
     }
 
-    public function setElseNode(S2Dao_ElseNode $elseNode) {
+    public function setElseNode(\S2Dao\Node\ElseNode $elseNode) {
         $this->elseNode = $elseNode;
     }
 
-    public function accept(S2Dao_CommandContext $ctx) {
+    public function accept(\S2Dao\CommandContext $ctx) {
         $result = false;
-        if(preg_match('/^([\w\.]+)(\s+.*)?/i', $this->parsedExpression, $matches)){
-            if(2 < count($matches)){
+        if (preg_match('/^([\w\.]+)(\s+.*)?/i',
+            $this->parsedExpression,
+            $matches)) {
+            if (2 < count($matches)) {
                 $expression = $matches[2];
                 $names = explode('.', $matches[1]);
 
@@ -62,14 +63,14 @@ class S2Dao_IfNode extends S2Dao_ContainerNode {
                 $clazz = $ctx->getArgType($names[0]);
                 $objType = gettype(new stdClass);
                 $c = count($names);
-                for($i = 1; $i < $c; $i++){
-                    if(!($objType == $clazz || is_object($clazz))){
+                for ($i = 1; $i < $c; $i++) {
+                    if (!($objType == $clazz || is_object($clazz))) {
                         continue;
                     }
-                    if($value === null){
+                    if ($value === null) {
                         continue;
                     }
-                    if(!is_object($value)) {
+                    if (!is_object($value)) {
                         break;
                     }
                     $refClass = new ReflectionClass($value);
@@ -84,32 +85,33 @@ class S2Dao_IfNode extends S2Dao_ContainerNode {
             }
             $evaluate = S2Container_EvalUtil::getExpression("\$value $expression");
             $result = eval($evaluate);
-            if(self::isBoolValue($result)){
-                if(self::isTrue($result)){
+            if (self::isBoolValue($result)) {
+                if (self::isTrue($result)) {
                     parent::accept($ctx);
                     $ctx->setEnabled(true);
-                } else if($this->elseNode !== null){
-                    $this->elseNode->accept($ctx);
+                } else if ($this->elseNode !== null) {
+                    $this->elseNode
+                        ->accept($ctx);
                     $ctx->setEnabled(true);
                 }
             } else {
-                throw new S2Dao_IllegalBoolExpressionRuntimeException($this->expression);
+                throw new \S2Dao\IllegalBoolExpressionRuntimeException($this->expression);
             }
         } else {
-            throw new S2Dao_IllegalBoolExpressionRuntimeException($this->expression);
+            throw new \S2Dao\IllegalBoolExpressionRuntimeException($this->expression);
         }
     }
 
-    private static function isBoolValue($value = null){
-        if($value === null){
+    private static function isBoolValue($value = null) {
+        if ($value === null) {
             return false;
         }
-        if(is_string($value)){
+        if (is_string($value)) {
             $v = trim($value);
-            if(self::isTrue($v)){
+            if (self::isTrue($v)) {
                 return true;
             }
-            if(self::isFalse($v)){
+            if (self::isFalse($v)) {
                 return true;
             }
             return false;
@@ -117,21 +119,21 @@ class S2Dao_IfNode extends S2Dao_ContainerNode {
         return is_bool($value);
     }
 
-    private static function isTrue($value){
-        if(is_bool($value)){
+    private static function isTrue($value) {
+        if (is_bool($value)) {
             return $value === true;
         }
-        if(is_string($value)){
+        if (is_string($value)) {
             return strcasecmp('true', $value) === 0;
         }
         return false;
     }
 
-    private static function isFalse($value){
-        if(is_bool($value)){
+    private static function isFalse($value) {
+        if (is_bool($value)) {
             return $value === true;
         }
-        if(is_string($value)){
+        if (is_string($value)) {
             return strcasecmp('false', $value) === 0;
         }
         return false;

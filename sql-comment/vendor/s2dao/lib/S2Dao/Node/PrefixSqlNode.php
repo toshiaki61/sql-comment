@@ -30,12 +30,12 @@ class PrefixSqlNode extends \S2Dao\Node\AbstractNode {
 
     private $prefix = '';
     private $sql = '';
-    
+
     public function __construct($prefix, $sql) {
         $this->prefix = $prefix;
         $this->sql = $sql;
     }
-    
+
     public function getPrefix() {
         return $this->prefix;
     }

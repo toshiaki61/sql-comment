@@ -49,8 +49,8 @@ class CommandContextImpl implements \S2Dao\CommandContext {
     private $enabled = false;
     private $parent;
 
-    public function __construct($parent = null){
-        if(self::$logger === null){
+    public function __construct($parent = null) {
+        if (self::$logger === null) {
             //self::$logger = S2Container_S2Logger::getLogger(get_class($this));
         }
         $this->args = [];
@@ -62,13 +62,13 @@ class CommandContextImpl implements \S2Dao\CommandContext {
         $this->enabled = false;
     }
 
-    public function getArg($name)
-    {
+    public function getArg($name) {
         $case = strtolower($name);
         if (isset($this->args[$case])) {
             return $this->args[$case];
         } else if ($this->parent !== null) {
-            return $this->parent->getArg($name);
+            return $this->parent
+                ->getArg($name);
         } else {
             if (count($this->args) === 1) {
                 return array_pop($this->args);
@@ -78,13 +78,13 @@ class CommandContextImpl implements \S2Dao\CommandContext {
         }
     }
 
-    public function getArgType($name)
-    {
+    public function getArgType($name) {
         $case = strtolower($name);
         if (isset($this->argTypes[$case])) {
             return $this->argTypes[$case];
         } else if ($this->parent !== null) {
-            return $this->parent->getArgType($name);
+            return $this->parent
+                ->getArgType($name);
         } else {
             if (count($this->argTypes) === 1) {
                 return array_pop($this->argTypes);
@@ -94,61 +94,59 @@ class CommandContextImpl implements \S2Dao\CommandContext {
         }
     }
 
-    public function addArg($name, $arg, $argType)
-    {
+    public function addArg($name, $arg, $argType) {
         $case = strtolower($name);
         $this->args[$case] = $arg;
         $this->argTypes[$case] = $argType;
     }
 
-    public function getSql()
-    {
-        return (string)$this->sqlBuf;
+    public function getSql() {
+        return (string) $this->sqlBuf;
     }
 
-    public function getBindVariables()
-    {
-        return $this->bindVariables->toArray();
+    public function getBindVariables() {
+        return $this->bindVariables
+            ->toArray();
     }
 
-    public function getBindVariableTypes()
-    {
-        return $this->bindVariableTypes->toArray();
+    public function getBindVariableTypes() {
+        return $this->bindVariableTypes
+            ->toArray();
     }
 
-    public function addSql($sql, $bindVariable = null, $bindVariableType = null)
-    {
-        if(is_array($bindVariable) && is_array($bindVariableType)){
+    public function addSql($sql, $bindVariable = null, $bindVariableType = null) {
+        if (is_array($bindVariable) && is_array($bindVariableType)) {
             $this->sqlBuf .= $sql;
             $c = count($bindVariable);
             for ($i = 0; $i < $c; ++$i) {
-                $this->bindVariables->offsetSet($i, $bindVariable[$i]);
-                $this->bindVariableTypes->offsetSet($i, $bindVariableType[$i]);
+                $this->bindVariables
+                    ->offsetSet($i, $bindVariable[$i]);
+                $this->bindVariableTypes
+                    ->offsetSet($i, $bindVariableType[$i]);
             }
             return $this;
-        } else if($bindVariable === null && $bindVariableType === null){
+        } else if ($bindVariable === null && $bindVariableType === null) {
             $this->sqlBuf .= $sql;
             return $this;
         } else {
             $this->sqlBuf .= $sql;
-            $this->bindVariables->offsetSet(0, $bindVariable);
-            $this->bindVariableTypes->offsetSet(0, $bindVariableType);
+            $this->bindVariables
+                ->offsetSet(0, $bindVariable);
+            $this->bindVariableTypes
+                ->offsetSet(0, $bindVariableType);
             return $this;
         }
     }
 
-    public function isEnabled()
-    {
+    public function isEnabled() {
         return $this->enabled;
     }
 
-    public function setEnabled($enabled)
-    {
+    public function setEnabled($enabled) {
         $this->enabled = $enabled;
     }
 
-    private function isNull($valueType = null)
-    {
+    private function isNull($valueType = null) {
         return $valueType === null || $valueType == gettype(null);
     }
 }

@@ -31,8 +31,8 @@ class S2RuntimeException extends \Exception {
     private $args_;
     private $message_;
     private $simpleMessage_;
-    private static $msgMap_ = [
-        'ESSR0001' => '{0} not found',
+    private static $msgMap_ = 
+        ['ESSR0001' => '{0} not found',
         'ESSR0003' => '[{0}] unexpected:[{1}]',
         'ESSR0007' => '{0} should not be null or empty',
         'ESSR0017' => 'Exception occurred, because {0}',
@@ -63,8 +63,7 @@ class S2RuntimeException extends \Exception {
         'ESSR1010' => 'Target[{0}] is not object. Target class[{1}] is not ReflectionClass.',
         'ESSR1011' => 'Container builder class[{1}] for extension[{0}] not implements S2ContainerBuilder interface.',
         'ESSR1012' => 'Container builder class not found for extension[{0}].',
-        'ESSR1013' => 'Can not aspect to abstract class having abstract protected method. [{0}::{1}()].'
-    ];
+        'ESSR1013' => 'Can not aspect to abstract class having abstract protected method. [{0}::{1}()].'];
 
     /**
      *
@@ -79,26 +78,26 @@ class S2RuntimeException extends \Exception {
      * @param string message id code
      * @params array message words
      */
-    private static function getMessageWithArgs($code,$args){
-        if(!is_array($args)){
+    private static function getMessageWithArgs($code, $args) {
+        if (!is_array($args)) {
             return "$args not array.\n";
         }
-        if(!is_string($code)){
+        if (!is_string($code)) {
             return "$code not string.\n";
         }
 
-        if(!isset(self::$msgMap_[$code])){
+        if (!isset(self::$msgMap_[$code])) {
             return "$code not found in " . implode(",", self::$msgMap_) . ".\n";
         }
         $msg = self::$msgMap_[$code];
 
-        $msg = preg_replace('/{/','{$args[',$msg);
-        $msg = preg_replace('/}/',']}',$msg);
-        $msg = S2Container_EvalUtil::getExpression('"'.$msg.'"');
+        $msg = preg_replace('/{/', '{$args[', $msg);
+        $msg = preg_replace('/}/', ']}', $msg);
+        $msg = S2Container_EvalUtil::getExpression('"' . $msg . '"');
 
-        if(defined('S2CONTAINER_PHP5_DEBUG_EVAL') && S2CONTAINER_PHP5_DEBUG_EVAL){
-            S2Container_S2Logger::getLogger(__CLASS__)->
-                debug("[ $msg ]",__METHOD__);
+        if (defined('S2CONTAINER_PHP5_DEBUG_EVAL') && S2CONTAINER_PHP5_DEBUG_EVAL) {
+            S2Container_S2Logger::getLogger(__CLASS__)->debug("[ $msg ]",
+                    __METHOD__);
         }
 
         return eval($msg);

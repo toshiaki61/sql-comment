@@ -29,7 +29,7 @@ namespace S2Dao\Node;
 class SqlNode extends \S2Dao\Node\AbstractNode {
 
     private $sql = '';
-    
+
     public function __construct($sql) {
         $this->sql = $sql;
     }

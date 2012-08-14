@@ -44,7 +44,8 @@ class ParenBindVariableNode extends \S2Dao\Node\AbstractNode {
 
     public function accept(\S2Dao\CommandContext $ctx) {
         $expression = preg_replace('/^(\w+)(\s+.*)?/i',
-                        '$ctx->getArg("\1")' . '\2', $this->parsedExpression);
+            '$ctx->getArg("\1")' . '\2',
+            $this->parsedExpression);
         $expression = S2Container_EvalUtil::getExpression($expression);
         $result = eval($expression);
 
@@ -68,7 +69,7 @@ class ParenBindVariableNode extends \S2Dao\Node\AbstractNode {
         for ($i = 0; $i < $length; ++$i) {
             $o = $array[$i];
             if ($o !== null) {
-                if(($clazz = get_class($o)) === false){
+                if (($clazz = get_class($o)) === false) {
                     $clazz = gettype($o);
                 }
             }

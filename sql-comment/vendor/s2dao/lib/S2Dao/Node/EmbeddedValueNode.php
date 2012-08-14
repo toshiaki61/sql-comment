@@ -34,7 +34,7 @@ class EmbeddedValueNode extends \S2Dao\Node\AbstractNode {
 
     public function __construct($expression) {
         $this->expression = $expression;
-        $array = explode('.',$expression);
+        $array = explode('.', $expression);
         $this->baseName = $array[0];
         if (1 < count($array)) {
             $this->propertyName = $array[1];
@@ -56,7 +56,7 @@ class EmbeddedValueNode extends \S2Dao\Node\AbstractNode {
             $clazz = $pd->getPropertyType();
         }
         if ($value != null) {
-            $ctx->addSql((string)$value);
+            $ctx->addSql((string) $value);
         }
     }
 }

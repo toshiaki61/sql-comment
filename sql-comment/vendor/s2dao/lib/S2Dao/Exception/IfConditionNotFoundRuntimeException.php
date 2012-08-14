@@ -26,7 +26,8 @@ namespace S2Dao\Exception;
  * @author nowel
  * @package org.seasar.s2dao.exception
  */
-class IfConditionNotFoundRuntimeException extends \S2Container\Exception\S2RuntimeException {
+class IfConditionNotFoundRuntimeException extends
+    \S2Container\Exception\S2RuntimeException {
     public function __construct() {
         parent::__construct('EDAO0004');
     }

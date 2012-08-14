@@ -30,7 +30,7 @@ class ElseNode extends \S2Dao\Node\ContainerNode {
 
     public function __construct() {
     }
-    
+
     public function accept(\S2Dao\CommandContext $ctx) {
         parent::accept($ctx);
         $ctx->setEnabled(true);

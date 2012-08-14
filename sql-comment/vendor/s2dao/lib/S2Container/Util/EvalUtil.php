@@ -26,25 +26,21 @@ namespace S2Container\Util;
  * @package org.seasar.framework.util
  * @author klove
  */
-final class EvalUtil
-{
-    private function __construct()
-    {
+final class EvalUtil {
+    private function __construct() {
     }
 
     /**
      * @param string eval expression
      * @return string eval expression
      */
-    public static function getExpression($expression)
-    {
+    public static function getExpression($expression) {
         $exp = $expression;
-        if (!preg_match("/\sreturn\s/",$exp) and
-            !preg_match("/\nreturn\s/",$exp) and
-            !preg_match("/^return\s/",$exp)) {
+        if (!preg_match("/\sreturn\s/", $exp) and !preg_match("/\nreturn\s/",
+            $exp) and !preg_match("/^return\s/", $exp)) {
             $exp = "return " . $exp;
         }
-        if (!preg_match("/;$/",$exp)) {
+        if (!preg_match("/;$/", $exp)) {
             $exp = $exp . ";";
         }
 
@@ -55,11 +51,10 @@ final class EvalUtil
      * @param string eval expression
      * @return string eval expression
      */
-    public static function addSemiColon($expression)
-    {
+    public static function addSemiColon($expression) {
         $exp = trim($expression);
 
-        if (!preg_match("/;$/",$exp)) {
+        if (!preg_match("/;$/", $exp)) {
             $exp = $exp . ";";
         }
 

@@ -44,10 +44,10 @@ class BindVariableNode extends \S2Dao\Node\AbstractNode {
     public function accept(\S2Dao\CommandContext $ctx) {
         $value = $ctx->getArg($this->names[0]);
         $clazz = $ctx->getArgType($this->names[0]);
-        
+
         $c = count($this->names);
-        for($pos = 1; $pos < $c; $pos++){
-            if(null === $value){
+        for ($pos = 1; $pos < $c; $pos++) {
+            if (null === $value) {
                 break;
             }
             if (!is_object($value)) {
@@ -60,9 +60,9 @@ class BindVariableNode extends \S2Dao\Node\AbstractNode {
             $clazz = $pd->getPropertyType();
         }
 
-        if($this->isNull($clazz)){
+        if ($this->isNull($clazz)) {
             $type = null;
-            if($this->isNull($value)){
+            if ($this->isNull($value)) {
                 $type = gettype(null);
             } else {
                 $type = gettype($value);
@@ -72,8 +72,8 @@ class BindVariableNode extends \S2Dao\Node\AbstractNode {
             $ctx->addSql('?', $value, gettype($clazz));
         }
     }
-    
-    private function isNull($clazz = null){
+
+    private function isNull($clazz = null) {
         return $clazz === null || $clazz == gettype(null);
     }
 }

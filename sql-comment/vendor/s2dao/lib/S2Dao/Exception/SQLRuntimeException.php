@@ -28,7 +28,8 @@ namespace S2Dao\Exception;
  */
 class SQLRuntimeException extends \S2Container\Exception\S2RuntimeException {
     public function __construct(Exception $cause) {
-        parent::__construct('ESSR0071', array($cause->getMessage(), $cause->getCode()));
+        parent::__construct('ESSR0071',
+            array($cause->getMessage(), $cause->getCode()));
     }
 }
 
