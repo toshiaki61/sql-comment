@@ -20,7 +20,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: S2Container_EvalUtil.class.php 429 2007-03-04 10:53:06Z klove $
+// $Id: $
 namespace S2Container\Util;
 /**
  * @package org.seasar.framework.util

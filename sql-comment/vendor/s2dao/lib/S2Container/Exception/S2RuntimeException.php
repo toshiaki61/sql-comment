@@ -20,7 +20,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: S2Container_S2RuntimeException.class.php 429 2007-03-04 10:53:06Z klove $
+// $Id: $
 namespace S2Container\Exception;
 /**
  * @package org.seasar.framework.exception
@@ -93,10 +93,10 @@ class S2RuntimeException extends \Exception {
 
         $msg = preg_replace('/{/', '{$args[', $msg);
         $msg = preg_replace('/}/', ']}', $msg);
-        $msg = S2Container_EvalUtil::getExpression('"' . $msg . '"');
+        $msg = \S2Container\Util\EvalUtil::getExpression('"' . $msg . '"');
 
         if (defined('S2CONTAINER_PHP5_DEBUG_EVAL') && S2CONTAINER_PHP5_DEBUG_EVAL) {
-            S2Container_S2Logger::getLogger(__CLASS__)->debug("[ $msg ]",
+            \S2Container\Logger\S2Logger::getLogger(__CLASS__)->debug("[ $msg ]",
                     __METHOD__);
         }
 

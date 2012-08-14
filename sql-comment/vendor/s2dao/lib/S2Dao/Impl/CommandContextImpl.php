@@ -51,7 +51,7 @@ class CommandContextImpl implements \S2Dao\CommandContext {
 
     public function __construct($parent = null) {
         if (self::$logger === null) {
-            //self::$logger = S2Container_S2Logger::getLogger(get_class($this));
+            self::$logger = \S2Container\Logger\S2Logger::getLogger(__CLASS__);
         }
         $this->args = [];
         $this->argTypes = [];
@@ -73,7 +73,7 @@ class CommandContextImpl implements \S2Dao\CommandContext {
             if (count($this->args) === 1) {
                 return array_pop($this->args);
             }
-            //self::$logger->info('Argument(' . $name . ') not found');
+            self::$logger->info('Argument(' . $name . ') not found');
             return null;
         }
     }
@@ -89,7 +89,7 @@ class CommandContextImpl implements \S2Dao\CommandContext {
             if (count($this->argTypes) === 1) {
                 return array_pop($this->argTypes);
             }
-            //self::$logger->info('Argument(' . $name . ') not found');
+            self::$logger->info('Argument(' . $name . ') not found');
             return null;
         }
     }

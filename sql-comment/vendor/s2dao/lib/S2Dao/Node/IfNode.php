@@ -73,8 +73,8 @@ class IfNode extends \S2Dao\Node\ContainerNode {
                     if (!is_object($value)) {
                         break;
                     }
-                    $refClass = new ReflectionClass($value);
-                    $beanDesc = S2Container_BeanDescFactory::getBeanDesc($refClass);
+                    $refClass = new \ReflectionClass($value);
+                    $beanDesc = \S2Container\Beans\BeanDescFactory::getBeanDesc($refClass);
                     $pd = $beanDesc->getPropertyDesc($names[$i]);
                     $value = $pd->getValue($value);
                     $clazz = $pd->getPropertyType();
@@ -83,7 +83,7 @@ class IfNode extends \S2Dao\Node\ContainerNode {
                 $value = $matches[1];
                 $expression = '';
             }
-            $evaluate = S2Container_EvalUtil::getExpression("\$value $expression");
+            $evaluate = \S2Container\Util\EvalUtil::getExpression("\$value $expression");
             $result = eval($evaluate);
             if (self::isBoolValue($result)) {
                 if (self::isTrue($result)) {

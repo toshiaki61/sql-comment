@@ -46,7 +46,7 @@ class ParenBindVariableNode extends \S2Dao\Node\AbstractNode {
         $expression = preg_replace('/^(\w+)(\s+.*)?/i',
             '$ctx->getArg("\1")' . '\2',
             $this->parsedExpression);
-        $expression = S2Container_EvalUtil::getExpression($expression);
+        $expression = \S2Container\Util\EvalUtil::getExpression($expression);
         $result = eval($expression);
 
         if ($result instanceof \SplFixedArray) {

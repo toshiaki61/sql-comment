@@ -223,4 +223,3 @@ class SqlParserImpl implements \S2Dao\SqlParser {
         return $content !== null && strcmp('END', $content) === 0;
     }
 }
-

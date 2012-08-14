@@ -53,8 +53,8 @@ class BindVariableNode extends \S2Dao\Node\AbstractNode {
             if (!is_object($value)) {
                 break;
             }
-            $refClass = new ReflectionClass($value);
-            $beanDesc = S2Container_BeanDescFactory::getBeanDesc($refClass);
+            $refClass = new \ReflectionClass($value);
+            $beanDesc = \S2Container\Beans\BeanDescFactory::getBeanDesc($refClass);
             $pd = $beanDesc->getPropertyDesc($this->names[$pos]);
             $value = $pd->getValue($value);
             $clazz = $pd->getPropertyType();
