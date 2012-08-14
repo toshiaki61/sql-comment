@@ -26,7 +26,7 @@ namespace S2Dao\Impl;
  * @author nowel
  * @package org.seasar.s2dao.parser
  */
-class S2Dao_SqlTokenizerImpl implements S2Dao_SqlTokenizer {
+class SqlTokenizerImpl implements \S2Dao\SqlTokenizer {
 
     private $sql = '';
     private $position = 0;
@@ -160,12 +160,12 @@ class S2Dao_SqlTokenizerImpl implements S2Dao_SqlTokenizer {
     }
 
     /**
-     * @throws S2Dao_TokenNotClosedRuntimeException
+     * @throws \S2Dao\TokenNotClosedRuntimeException
      */
     protected function parseComment() {
         $commentEndPos = strpos($this->sql, '*/', $this->position);
         if ($commentEndPos === false || $commentEndPos < 0) {
-            throw new S2Dao_TokenNotClosedRuntimeException('*/',
+            throw new \S2Dao\TokenNotClosedRuntimeException('*/',
                                                      substr($this->sql,
                                                      $this->position));
         }

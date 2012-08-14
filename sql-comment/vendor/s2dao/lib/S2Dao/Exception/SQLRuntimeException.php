@@ -26,7 +26,7 @@ namespace S2Dao\Exception;
  * @author nowel
  * @package org.seasar.s2dao.exception
  */
-class S2Dao_SQLRuntimeException extends S2Container_S2RuntimeException {
+class SQLRuntimeException extends \S2Container\Exception\S2RuntimeException {
     public function __construct(Exception $cause) {
         parent::__construct('ESSR0071', array($cause->getMessage(), $cause->getCode()));
     }

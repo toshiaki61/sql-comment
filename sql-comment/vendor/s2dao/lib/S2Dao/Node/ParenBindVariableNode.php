@@ -26,7 +26,7 @@ namespace S2Dao\Node;
  * @author nowel
  * @package org.seasar.s2dao.node
  */
-class S2Dao_ParenBindVariableNode extends S2Dao_AbstractNode {
+class ParenBindVariableNode extends \S2Dao\Node\AbstractNode {
 
     private $expression = '';
     private $parsedExpression = null;
@@ -42,13 +42,13 @@ class S2Dao_ParenBindVariableNode extends S2Dao_AbstractNode {
         return $this->expression;
     }
 
-    public function accept(S2Dao_CommandContext $ctx) {
+    public function accept(\S2Dao\CommandContext $ctx) {
         $expression = preg_replace('/^(\w+)(\s+.*)?/i',
                         '$ctx->getArg("\1")' . '\2', $this->parsedExpression);
         $expression = S2Container_EvalUtil::getExpression($expression);
         $result = eval($expression);
-        
-        if ($result instanceof S2Dao_List) {
+
+        if ($result instanceof \SplFixedArray) {
             $this->bindArray($ctx, $result->toArray());
         } else if ($result === null) {
             return;
@@ -59,7 +59,7 @@ class S2Dao_ParenBindVariableNode extends S2Dao_AbstractNode {
         }
     }
 
-    private function bindArray(S2Dao_CommandContext $ctx, array $array) {
+    private function bindArray(\S2Dao\CommandContext $ctx, array $array) {
         $length = count($array);
         if ($length == 0) {
             return;

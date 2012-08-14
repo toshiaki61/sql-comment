@@ -26,7 +26,7 @@ namespace S2Dao\Node;
  * @author nowel
  * @package org.seasar.s2dao.node
  */
-class S2Dao_SqlNode extends S2Dao_AbstractNode {
+class SqlNode extends \S2Dao\Node\AbstractNode {
 
     private $sql = '';
     
@@ -38,7 +38,7 @@ class S2Dao_SqlNode extends S2Dao_AbstractNode {
         return $this->sql;
     }
 
-    public function accept(S2Dao_CommandContext $ctx) {
+    public function accept(\S2Dao\CommandContext $ctx) {
         $ctx->addSql($this->sql);
     }
 }

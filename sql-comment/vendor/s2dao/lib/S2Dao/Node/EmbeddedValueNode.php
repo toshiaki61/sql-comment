@@ -26,7 +26,7 @@ namespace S2Dao\Node;
  * @author nowel
  * @package org.seasar.s2dao.node
  */
-class S2Dao_EmbeddedValueNode extends S2Dao_AbstractNode {
+class EmbeddedValueNode extends \S2Dao\Node\AbstractNode {
 
     private $expression = '';
     private $baseName = '';
@@ -45,7 +45,7 @@ class S2Dao_EmbeddedValueNode extends S2Dao_AbstractNode {
         return $this->expression;
     }
 
-    public function accept(S2Dao_CommandContext $ctx) {
+    public function accept(\S2Dao\CommandContext $ctx) {
         $value = $ctx->getArg($this->baseName);
         $clazz = $ctx->getArgType($this->baseName);
 

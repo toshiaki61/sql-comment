@@ -26,7 +26,7 @@ namespace S2Dao;
  * @author nowel
  * @package org.seasar.s2dao
  */
-interface S2Dao_CommandContext {
+interface CommandContext {
 
     public function getArg($name);
 

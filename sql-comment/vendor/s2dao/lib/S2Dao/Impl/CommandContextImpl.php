@@ -26,7 +26,7 @@ namespace S2Dao\Impl;
  * @author nowel
  * @package org.seasar.s2dao.impl
  */
-class S2Dao_CommandContextImpl implements S2Dao_CommandContext {
+class CommandContextImpl implements \S2Dao\CommandContext {
 
     private static $logger = null;
     /**

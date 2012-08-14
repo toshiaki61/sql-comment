@@ -26,10 +26,10 @@ namespace S2Dao;
  * @author nowel
  * @package org.seasar.s2dao
  */
-interface S2Dao_Node {
+interface Node {
     public function getChildSize();
     public function getChild($index);
     public function addChild($node);
-    public function accept(S2Dao_CommandContext $ctx);
+    public function accept(\S2Dao\CommandContext $ctx);
 }
 

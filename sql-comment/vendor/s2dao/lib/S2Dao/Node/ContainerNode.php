@@ -26,12 +26,12 @@ namespace S2Dao\Node;
  * @author nowel
  * @package org.seasar.s2dao.node
  */
-class S2Dao_ContainerNode extends S2Dao_AbstractNode {
+class ContainerNode extends \S2Dao\Node\AbstractNode {
 
     public function __construct() {
     }
 
-    public function accept(S2Dao_CommandContext $ctx) {
+    public function accept(\S2Dao\CommandContext $ctx) {
         $c = $this->getChildSize();
         for ($i = 0; $i < $c; ++$i) {
             $this->getChild($i)->accept($ctx);

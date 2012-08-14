@@ -26,7 +26,7 @@ namespace S2Dao;
  * @author nowel
  * @package org.seasar.s2dao
  */
-final class S2Dao_PHPType {
+final class PHPType {
 
     const Boolean = 'boolean';
     const Integer = 'integer';

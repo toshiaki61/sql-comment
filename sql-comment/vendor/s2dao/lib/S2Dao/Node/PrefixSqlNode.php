@@ -26,7 +26,7 @@ namespace S2Dao\Node;
  * @author nowel
  * @package org.seasar.s2dao.node
  */
-class S2Dao_PrefixSqlNode extends S2Dao_AbstractNode {
+class PrefixSqlNode extends \S2Dao\Node\AbstractNode {
 
     private $prefix = '';
     private $sql = '';
@@ -44,7 +44,7 @@ class S2Dao_PrefixSqlNode extends S2Dao_AbstractNode {
         return $this->sql;
     }
 
-    public function accept(S2Dao_CommandContext $ctx) {
+    public function accept(\S2Dao\CommandContext $ctx) {
         if ($ctx->isEnabled()) {
             $ctx->addSql($this->prefix);
         }

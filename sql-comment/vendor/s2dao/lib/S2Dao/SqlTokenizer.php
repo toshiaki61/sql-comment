@@ -26,7 +26,7 @@ namespace S2Dao;
  * @author nowel
  * @package org.seasar.s2dao
  */
-interface S2Dao_SqlTokenizer {
+interface SqlTokenizer {
 
     const SQL = 1;
     const COMMENT = 2;

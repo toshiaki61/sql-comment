@@ -26,12 +26,12 @@ namespace S2Dao\Node;
  * @author nowel
  * @package org.seasar.s2dao.node
  */
-class S2Dao_ElseNode extends S2Dao_ContainerNode {
+class ElseNode extends \S2Dao\Node\ContainerNode {
 
     public function __construct() {
     }
     
-    public function accept(S2Dao_CommandContext $ctx) {
+    public function accept(\S2Dao\CommandContext $ctx) {
         parent::accept($ctx);
         $ctx->setEnabled(true);
     }

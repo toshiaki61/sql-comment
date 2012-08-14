@@ -26,7 +26,7 @@ namespace S2Dao\Exception;
  * @author nowel
  * @package org.seasar.s2dao.exception
  */
-class S2Dao_EndCommentNotFoundRuntimeException extends S2Container_S2RuntimeException {
+class EndCommentNotFoundRuntimeException extends \S2Container\Exception\S2RuntimeException {
     public function __construct() {
         parent::__construct('EDAO0007');
     }
