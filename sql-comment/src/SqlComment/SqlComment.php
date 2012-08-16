@@ -1,5 +1,7 @@
 <?php
 namespace SqlComment;
+use S2Dao\PHPType;
+
 class SqlComment {
     /**
      * @var string
@@ -48,7 +50,7 @@ class SqlComment {
      * Apply specified arguments
      *
      * @param array $args
-     * @return S2Dao_CommandContext
+     * @return \S2Dao\CommandContext
      */
     protected function apply($args) {
         $ctx = $this->createCommandContext($args);
@@ -64,18 +66,12 @@ class SqlComment {
      * @return array
      */
     protected function getArgTypes($args) {
-        $argTypes = array();
-        if ($args === null) {
+        $argTypes = [];
+        if (empty($args)) {
             return $argTypes;
         }
-        $c = count($args);
-        for ($i = 0; $i < $c; ++$i) {
-            $arg = $args[$i];
-            if ($arg != null && is_object($arg)) {
-                $argTypes[$i] = get_class($arg);
-            } else {
-                $argTypes[$i] = gettype($arg);
-            }
+        foreach ($args as $key => $value) {
+            $argTypes[$key] = PHPType::getType($value);
         }
         return $argTypes;
     }
@@ -88,7 +84,7 @@ class SqlComment {
      */
     protected function createCommandContext($args) {
         $ctx = new \S2Dao\Impl\CommandContextImpl();
-        if ($args === null) {
+        if (empty($args)) {
             return $ctx;
         }
 
@@ -103,7 +99,7 @@ class SqlComment {
                     $argType = $args[$i];
                 }
             }
-            $argType = \S2Dao\PHPType::getType($argType, $args[$i]);
+            $argType = PHPType::getType($argType, $args[$i]);
             if ($i < $namesCount || isset($this->argNames[$i])) {
                 $ctx->addArg($this->argNames[$i], $args[$i], $argType);
             } else {

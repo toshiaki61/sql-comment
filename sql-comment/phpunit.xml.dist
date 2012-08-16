@@ -14,6 +14,11 @@
             <directory suffix=".php">./vendor/s2dao/lib//</directory>
         </whitelist>
     </filter>
+
+	<php>
+		<const name="S2CONTAINER_PHP5_LOG_LEVEL" value="1"/>
+		<const name="S2CONTAINER_PHP5_SIMPLE_LOG_FILE" value="./tmp/simple.log"/>
+	</php>
 	
 	<logging>
 	  <log type="coverage-html" target="./tmp/report" charset="UTF-8"
