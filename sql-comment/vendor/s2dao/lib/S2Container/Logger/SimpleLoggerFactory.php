@@ -32,7 +32,7 @@ class SimpleLoggerFactory {
     public function __construct() {
     }
 
-    public function getInstance($class) {
+    public function getInstance($class = '') {
         if ($this->logger === null) {
             $this->logger = new \S2Container\Logger\SimpleLogger();
         }

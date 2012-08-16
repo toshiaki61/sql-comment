@@ -68,7 +68,7 @@ final class BeanDescImpl implements \S2Container\Beans\BeanDesc {
      */
     public function getPropertyDesc($propertyName) {
         if (is_int($propertyName)) {
-            if ($propertyName < 0 or $propertyName >= count($this->propertyDescCacheIndex_)) {
+            if ($propertyName < 0 || $propertyName >= count($this->propertyDescCacheIndex_)) {
                 throw new \S2Container\Beans\Exception\PropertyNotFoundRuntimeException($this->beanClass_, 'index ' . $propertyName);
             }
             return $this->propertyDescCache_[$this->propertyDescCacheIndex_[$propertyName]];

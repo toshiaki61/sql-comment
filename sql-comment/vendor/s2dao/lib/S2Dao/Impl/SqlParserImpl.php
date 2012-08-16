@@ -33,7 +33,7 @@ class SqlParserImpl implements \S2Dao\SqlParser {
 
     public function __construct($sql) {
         $sql = preg_replace('/;$/s', '', trim($sql));
-        $this->tokenizer = new \S2Dao\SqlTokenizerImpl($sql);
+        $this->tokenizer = new \S2Dao\Impl\SqlTokenizerImpl($sql);
     }
 
     public function parse() {
@@ -71,7 +71,7 @@ class SqlParserImpl implements \S2Dao\SqlParser {
         }
         $node = $this->peek();
         if (($node instanceof \S2Dao\Node\IfNode || $node instanceof \S2Dao\Node\ElseNode) && $node->getChildSize() === 0) {
-            $st = new \S2Dao\SqlTokenizerImpl($sql);
+            $st = new \S2Dao\Impl\SqlTokenizerImpl($sql);
             $st->skipWhitespace();
             $token = $st->skipToken();
             $st->skipWhitespace();
@@ -103,13 +103,13 @@ class SqlParserImpl implements \S2Dao\SqlParser {
     }
 
     /**
-     * @throws \S2Dao\IfConditionNotFoundRuntimeException
+     * @throws \S2Dao\Exception\IfConditionNotFoundRuntimeException
      */
     protected function parseIf() {
         $condition = trim(substr($this->tokenizer
             ->getToken(), 2));
         if (empty($condition)) {
-            throw new \S2Dao\IfConditionNotFoundRuntimeException();
+            throw new \S2Dao\Exception\IfConditionNotFoundRuntimeException();
         }
         $ifNode = new \S2Dao\Node\IfNode($condition);
         $this->peek()
@@ -127,7 +127,7 @@ class SqlParserImpl implements \S2Dao\SqlParser {
     }
 
     /**
-     * @throws \S2Dao\EndCommentNotFoundRuntimeException
+     * @throws \S2Dao\Exception\EndCommentNotFoundRuntimeException
      */
     protected function parseEnd() {
         while (\S2Dao\SqlTokenizer::EOF != $this->tokenizer
@@ -140,7 +140,7 @@ class SqlParserImpl implements \S2Dao\SqlParser {
             }
             $this->parseToken();
         }
-        throw new \S2Dao\EndCommentNotFoundRuntimeException();
+        throw new \S2Dao\Exception\EndCommentNotFoundRuntimeException();
     }
 
     protected function parseElse() {

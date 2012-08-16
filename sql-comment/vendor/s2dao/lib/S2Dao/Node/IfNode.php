@@ -61,7 +61,7 @@ class IfNode extends \S2Dao\Node\ContainerNode {
 
                 $value = $ctx->getArg($names[0]);
                 $clazz = $ctx->getArgType($names[0]);
-                $objType = gettype(new stdClass);
+                $objType = gettype(new \stdClass);
                 $c = count($names);
                 for ($i = 1; $i < $c; $i++) {
                     if (!($objType == $clazz || is_object($clazz))) {
@@ -95,10 +95,10 @@ class IfNode extends \S2Dao\Node\ContainerNode {
                     $ctx->setEnabled(true);
                 }
             } else {
-                throw new \S2Dao\IllegalBoolExpressionRuntimeException($this->expression);
+                throw new \S2Dao\Exception\IllegalBoolExpressionRuntimeException($this->expression);
             }
         } else {
-            throw new \S2Dao\IllegalBoolExpressionRuntimeException($this->expression);
+            throw new \S2Dao\Exception\IllegalBoolExpressionRuntimeException($this->expression);
         }
     }
 

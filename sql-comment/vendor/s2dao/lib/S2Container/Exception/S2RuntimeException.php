@@ -31,7 +31,7 @@ class S2RuntimeException extends \Exception {
     private $args_;
     private $message_;
     private $simpleMessage_;
-    private static $msgMap_ = 
+    private static $msgMap_ =
         ['ESSR0001' => '{0} not found',
         'ESSR0003' => '[{0}] unexpected:[{1}]',
         'ESSR0007' => '{0} should not be null or empty',
@@ -63,13 +63,37 @@ class S2RuntimeException extends \Exception {
         'ESSR1010' => 'Target[{0}] is not object. Target class[{1}] is not ReflectionClass.',
         'ESSR1011' => 'Container builder class[{1}] for extension[{0}] not implements S2ContainerBuilder interface.',
         'ESSR1012' => 'Container builder class not found for extension[{0}].',
-        'ESSR1013' => 'Can not aspect to abstract class having abstract protected method. [{0}::{1}()].'];
+        'ESSR1013' => 'Can not aspect to abstract class having abstract protected method. [{0}::{1}()].',
+        'EDAO0001' => 'Query({0}) not found',
+        'EDAO0002' => '{0} not closed in ({1})',
+        'EDAO0003' => '({0}) is not bool expression',
+        'EDAO0004' => 'Condition of IF comment not found',
+        'EDAO0005' => 'Target for update must be single row(actual:{1}).({0})',
+        'EDAO0006' => '({0}) is illegal.The argument should be corresponding to the type of Bean.',
+        'EDAO0007' => 'END comment not found',
+        'EDAO0008' => 'Dao interface not found in {0}',
+        'EDAO0009' => 'PrimaryKey not found in {0}',
+        'EDAO0010' => 'Function {0} uses unsupported column type',
+        'EDAO0011' => 'Doesn\'t support storedprocedure with multi return value {0}',
+        'EDAO0012' => 'Storedprocedure({0}) not found',
+        'EDAO0013' => 'Multiple  storedprocedure({0}) found',
+        'EDAO0014' => 'No not null column',
+        'EDAO0015' => 'No rows were updated',
+        'EDAO0016' => 'Not Exactly one row updated (actual:{0})',
+        'ESSR0067' => 'Table<{0}> not found',
+        'ESSR0068' => 'Column<{1}> of Table<{0}>not found',
+        'ESSR0071' => 'SQLException occured, because {0}',
+        'ESSR0311' => 'No transaction',
+        'ESSR0317' => 'Already associated with another transaction',
+        'ESSR0365' => '{0} is not a Throwable',
+        'WDAO0001' => 'Argument({0}) not found',
+        'WDAO0002' => 'Table({0}) not found',];
 
     /**
      *
      */
     public function __construct($messageCode, $args = null, $cause = null) {
-        $cause instanceof Exception ? $msg = $cause->getMessage() . "\n" : $msg = "";
+        $cause instanceof \Exception ? $msg = $cause->getMessage() . "\n" : $msg = "";
         $msg .= self::getMessageWithArgs($messageCode, $args);
         parent::__construct($msg);
     }

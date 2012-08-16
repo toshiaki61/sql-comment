@@ -38,7 +38,7 @@ final class BeanDescFactory {
     /**
      * @param \ReflectionClass
      */
-    public static function getBeanDesc(ReflectionClass $clazz) {
+    public static function getBeanDesc(\ReflectionClass $clazz) {
         if (array_key_exists($clazz->getName(), self::$beanDescCache_)) {
             $beanDesc = self::$beanDescCache_[$clazz->getName()];
         } else {

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="./tests/bootstrap.php" colors="true">
+    <testsuites>
+        <testsuite name="s2dao Test Suite">
+            <directory suffix="Test.php">./tests/S2Dao/Test/</directory>
+            <directory suffix="Test.php">./tests/S2Container/Test/</directory>
+        </testsuite>
+    </testsuites>
+	
+	<php>
+		<const name="S2CONTAINER_PHP5_LOG_LEVEL" value="1"/>
+		<const name="S2CONTAINER_PHP5_SIMPLE_LOG_FILE" value="./tmp/simple.log"/>
+	</php>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./lib/</directory>
+        </whitelist>
+    </filter>
+	
+	<logging>
+	  <log type="coverage-html" target="./tmp/report" charset="UTF-8"
+	       yui="true" highlight="false"
+	       lowUpperBound="35" highLowerBound="70"/>
+	  <!-- <log type="coverage-clover" target="./tmp/coverage.xml"/> -->
+	  <!-- <log type="coverage-php" target="./tmp/coverage.serialized"/> -->
+	  <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+	  <log type="json" target="./tmp/logfile.json"/>
+	  <log type="tap" target="./tmp/logfile.tap"/>
+	  <log type="junit" target="./tmp/logfile.xml" logIncompleteSkipped="false"/>
+	  <log type="testdox-html" target="./tmp/testdox.html"/>
+	  <log type="testdox-text" target="./tmp/testdox.txt"/>
+	</logging>
+</phpunit>

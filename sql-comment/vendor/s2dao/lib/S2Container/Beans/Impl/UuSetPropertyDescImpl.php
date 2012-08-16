@@ -61,7 +61,7 @@ final class UuSetPropertyDescImpl extends
             \S2Container\Util\MethodUtil::invoke($this->writeMethod_,
                 $target,
                 array($this->setterPropertyName_, $value));
-        } catch (Exception $t) {
+        } catch (\Exception $t) {
             throw new \S2Container\Beans\Exception\IllegalPropertyRuntimeException($this->beanDesc_
                 ->getBeanClass(), $this->propertyName_, $t);
         }

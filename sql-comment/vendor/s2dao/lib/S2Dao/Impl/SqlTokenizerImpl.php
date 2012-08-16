@@ -156,12 +156,12 @@ class SqlTokenizerImpl implements \S2Dao\SqlTokenizer {
     }
 
     /**
-     * @throws \S2Dao\TokenNotClosedRuntimeException
+     * @throws \S2Dao\Exception\TokenNotClosedRuntimeException
      */
     protected function parseComment() {
         $commentEndPos = strpos($this->sql, '*/', $this->position);
         if ($commentEndPos === false || $commentEndPos < 0) {
-            throw new \S2Dao\TokenNotClosedRuntimeException('*/', substr($this->sql,
+            throw new \S2Dao\Exception\TokenNotClosedRuntimeException('*/', substr($this->sql,
                 $this->position));
         }
         $endPos = $commentEndPos - $this->position;

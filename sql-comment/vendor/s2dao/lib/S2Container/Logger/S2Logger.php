@@ -40,9 +40,9 @@ final class S2Logger
     /**
      * @param string class name
      */
-    public static final function getLogger($class)
+    public static final function getLogger($class = '')
     {
-        return self::getLoggerFactory()->getInstance();
+        return self::getLoggerFactory()->getInstance($class);
     }
 
     public static final function getLoggerFactory()

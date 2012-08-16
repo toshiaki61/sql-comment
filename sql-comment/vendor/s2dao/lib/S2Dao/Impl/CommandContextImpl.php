@@ -39,16 +39,21 @@ class CommandContextImpl implements \S2Dao\CommandContext {
     private $argTypes;
     private $sqlBuf = '';
     /**
-     * @var \SplFixedArray
+     * @var array
      */
     private $bindVariables;
     /**
-     * @var \SplFixedArray
+     * @var array
      */
     private $bindVariableTypes;
     private $enabled = false;
     private $parent;
 
+    /**
+     * Constructs CommandContextImpl
+     *
+     * @param S2Dao\CommandContext $parent
+     */
     public function __construct($parent = null) {
         if (self::$logger === null) {
             self::$logger = \S2Container\Logger\S2Logger::getLogger(__CLASS__);
@@ -56,12 +61,16 @@ class CommandContextImpl implements \S2Dao\CommandContext {
         $this->args = [];
         $this->argTypes = [];
         $this->sqlBuf = '';
-        $this->bindVariables = new \SplFixedArray(100);
-        $this->bindVariableTypes = new \SplFixedArray(100);
+        $this->bindVariables = [];
+        $this->bindVariableTypes = [];
         $this->parent = $parent;
         $this->enabled = false;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see S2Dao.CommandContext::getArg()
+     */
     public function getArg($name) {
         $case = strtolower($name);
         if (isset($this->args[$case])) {
@@ -73,11 +82,15 @@ class CommandContextImpl implements \S2Dao\CommandContext {
             if (count($this->args) === 1) {
                 return array_pop($this->args);
             }
-            self::$logger->info('Argument(' . $name . ') not found');
+            self::$logger->info('Argument(' . $name . ') not found', __METHOD__);
             return null;
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see S2Dao.CommandContext::getArgType()
+     */
     public function getArgType($name) {
         $case = strtolower($name);
         if (isset($this->argTypes[$case])) {
@@ -89,63 +102,86 @@ class CommandContextImpl implements \S2Dao\CommandContext {
             if (count($this->argTypes) === 1) {
                 return array_pop($this->argTypes);
             }
-            self::$logger->info('Argument(' . $name . ') not found');
+            self::$logger->info('Argument(' . $name . ') not found', __METHOD__);
             return null;
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see S2Dao.CommandContext::addArg()
+     */
     public function addArg($name, $arg, $argType) {
         $case = strtolower($name);
         $this->args[$case] = $arg;
         $this->argTypes[$case] = $argType;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see S2Dao.CommandContext::getSql()
+     */
     public function getSql() {
         return (string) $this->sqlBuf;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see S2Dao.CommandContext::getBindVariables()
+     */
     public function getBindVariables() {
-        return $this->bindVariables
-            ->toArray();
+        return $this->bindVariables;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see S2Dao.CommandContext::getBindVariableTypes()
+     */
     public function getBindVariableTypes() {
-        return $this->bindVariableTypes
-            ->toArray();
+        return $this->bindVariableTypes;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see S2Dao.CommandContext::addSql()
+     */
     public function addSql($sql, $bindVariable = null, $bindVariableType = null) {
         if (is_array($bindVariable) && is_array($bindVariableType)) {
             $this->sqlBuf .= $sql;
-            $c = count($bindVariable);
-            for ($i = 0; $i < $c; ++$i) {
-                $this->bindVariables
-                    ->offsetSet($i, $bindVariable[$i]);
-                $this->bindVariableTypes
-                    ->offsetSet($i, $bindVariableType[$i]);
+            for ($i = 0, $c = count($bindVariable); $i < $c; ++$i) {
+                $this->bindVariables[] = $bindVariable[$i];
+                $this->bindVariableTypes[] = $bindVariableType[$i];
             }
-            return $this;
         } else if ($bindVariable === null && $bindVariableType === null) {
             $this->sqlBuf .= $sql;
-            return $this;
         } else {
             $this->sqlBuf .= $sql;
-            $this->bindVariables
-                ->offsetSet(0, $bindVariable);
-            $this->bindVariableTypes
-                ->offsetSet(0, $bindVariableType);
-            return $this;
+            $this->bindVariables[] = $bindVariable;
+            $this->bindVariableTypes[] = $bindVariable;
         }
+        return $this;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see S2Dao.CommandContext::isEnabled()
+     */
     public function isEnabled() {
         return $this->enabled;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see S2Dao.CommandContext::setEnabled()
+     */
     public function setEnabled($enabled) {
         $this->enabled = $enabled;
     }
 
+    /**
+     * @param mixed $valueType
+     * @return bool
+     */
     private function isNull($valueType = null) {
         return $valueType === null || $valueType == gettype(null);
     }

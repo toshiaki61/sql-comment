@@ -34,7 +34,7 @@ class AddWhereIfNode extends \S2Dao\Node\ContainerNode {
     }
 
     public function accept(\S2Dao\CommandContext $ctx) {
-        $childCtx = new \S2Dao\CommandContextImpl($ctx);
+        $childCtx = new \S2Dao\Impl\CommandContextImpl($ctx);
         parent::accept($childCtx);
         if ($childCtx->isEnabled()) {
             $sql = $childCtx->getSql();

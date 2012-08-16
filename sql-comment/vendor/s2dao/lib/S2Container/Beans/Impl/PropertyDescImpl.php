@@ -121,8 +121,8 @@ class PropertyDescImpl implements \S2Container\Beans\PropertyDesc {
             \S2Container\Util\MethodUtil::invoke($this->writeMethod_,
                 $target,
                 array($value));
-        } catch (Exception $t) {
-            throw new S2Container_IllegalPropertyRuntimeException($this->beanDesc_
+        } catch (\Exception $t) {
+            throw new \S2Container\Beans\Exception\IllegalPropertyRuntimeException($this->beanDesc_
                 ->getBeanClass(), $this->propertyName_, $t);
         }
     }

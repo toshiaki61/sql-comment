@@ -17,37 +17,30 @@
 // | either express or implied. See the License for the specific language |
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
-// | Authors: nowel                                                       |
+// | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
-// $Id: $
 //
-namespace S2Dao;
+// $Id:$
+namespace S2Container\Test\Beans;
 /**
- * @author nowel
- * @package org.seasar.s2dao
+ * @package org.seasar.framework.beans.factory
+ * @author klove
  */
-final class PHPType {
+use S2Container\Beans\BeanDescFactory;
 
-    const Boolean = 'boolean';
-    const Integer = 'integer';
-    const Double = 'double';
-    const Float = 'float';
-    const String = 'string';
-    const Object = 'object';
-    const Resource = 'resource';
-    const Null = 'NULL';
-    const Unknown = 'unknown type';
+use S2Container\Beans\Impl\BeanDescImpl;
 
-    public static function getType($type, $value = null) {
-        if ($type instanceof \Reflector) {
-            $argClass = $type->getClass();
-            if ($argClass === null) {
-                return gettype($value);
-            }
-            return $argClass->getName();
-        } else if (is_object($type)) {
-            return get_class($type);
-        }
-        return gettype($type);
+class BeanDescFactoryTest extends \PHPUnit_Framework_TestCase {
+
+    function testGetBeanDesc() {
+        $a = new \ReflectionClass('\S2Container\Test\Beans\A_S2Container_BeanDescFactory');
+        $desc = BeanDescFactory::getBeanDesc($a);
+        $this->assertTrue($desc instanceof BeanDescImpl);
+
+        $a2 = new \ReflectionClass('\S2Container\Test\Beans\A_S2Container_BeanDescFactory');
+        $this->assertEquals($a, $a2);
     }
+}
+
+class A_S2Container_BeanDescFactory {
 }

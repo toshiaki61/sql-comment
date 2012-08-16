@@ -28,22 +28,56 @@ namespace S2Dao;
  */
 interface CommandContext {
 
+    /**
+     * @param string $name
+     * @return mixed
+     */
     public function getArg($name);
 
+    /**
+     * @param string $name
+     * @return string
+     */
     public function getArgType($name);
 
+    /**
+     * @param string $name
+     * @param mixed $arg
+     * @param string $argType
+     */
     public function addArg($name, $arg, $argType);
 
+    /**
+     * @return string
+     */
     public function getSql();
 
+    /**
+     * @return array
+     */
     public function getBindVariables();
 
+    /**
+     * @return array
+     */
     public function getBindVariableTypes();
 
+    /**
+     * @param string $sql
+     * @param array $bindVariable
+     * @param array $bindVariableType
+     * @return S2Dao\CommandContext
+     */
     public function addSql($sql, $bindVariable = null, $bindVariableType = null);
 
+    /**
+     * @return bool
+     */
     public function isEnabled();
 
+    /**
+     * @param bool $enabled
+     */
     public function setEnabled($enabled);
 }
 
