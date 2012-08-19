@@ -30,14 +30,26 @@ class SqlNode extends \S2Dao\Node\AbstractNode {
 
     private $sql = '';
 
+    /**
+     * Constructs SqlNode.
+     * @param string $sql
+     */
     public function __construct($sql) {
+        parent::__construct();
         $this->sql = $sql;
     }
 
+    /**
+     * @return string
+     */
     public function getSql() {
         return $this->sql;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see S2Dao.Node::accept()
+     */
     public function accept(\S2Dao\CommandContext $ctx) {
         $ctx->addSql($this->sql);
     }

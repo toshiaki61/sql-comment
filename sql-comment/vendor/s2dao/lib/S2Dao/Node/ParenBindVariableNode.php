@@ -31,17 +31,29 @@ class ParenBindVariableNode extends \S2Dao\Node\AbstractNode {
     private $expression = '';
     private $parsedExpression = null;
 
+    /**
+     * Constructs ParenBindVariableNode.
+     * @param string $expression
+     */
     public function __construct($expression) {
+        parent::__construct();
         $this->expression = $expression;
         $expression = quotemeta($expression);
         $expression = str_replace('\.', '.', $expression);
         $this->parsedExpression = $expression;
     }
 
+    /**
+     * @return string
+     */
     public function getExpression() {
         return $this->expression;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see S2Dao.Node::accept()
+     */
     public function accept(\S2Dao\CommandContext $ctx) {
         $expression = preg_replace('/^(\w+)(\s+.*)?/i',
             '$ctx->getArg("\1")' . '\2',
@@ -60,6 +72,10 @@ class ParenBindVariableNode extends \S2Dao\Node\AbstractNode {
         }
     }
 
+    /**
+     * @param \S2Dao\CommandContext $ctx
+     * @param array $array
+     */
     private function bindArray(\S2Dao\CommandContext $ctx, array $array) {
         $length = count($array);
         if ($length == 0) {

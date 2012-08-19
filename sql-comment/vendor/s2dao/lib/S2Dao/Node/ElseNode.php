@@ -28,9 +28,17 @@ namespace S2Dao\Node;
  */
 class ElseNode extends \S2Dao\Node\ContainerNode {
 
+    /**
+     * Constructs ElseNode.
+     */
     public function __construct() {
+        parent::__construct();
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see S2Dao\Node.ContainerNode::accept()
+     */
     public function accept(\S2Dao\CommandContext $ctx) {
         parent::accept($ctx);
         $ctx->setEnabled(true);

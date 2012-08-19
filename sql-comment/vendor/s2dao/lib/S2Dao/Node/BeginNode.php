@@ -29,9 +29,17 @@ namespace S2Dao\Node;
  */
 class BeginNode extends \S2Dao\Node\ContainerNode {
 
+    /**
+     * Constructs BeginNode.
+     */
     public function __construct() {
+        parent::__construct();
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see S2Dao\Node.ContainerNode::accept()
+     */
     public function accept(\S2Dao\CommandContext $ctx) {
         $childCtx = new \S2Dao\Impl\CommandContextImpl($ctx);
         parent::accept($childCtx);

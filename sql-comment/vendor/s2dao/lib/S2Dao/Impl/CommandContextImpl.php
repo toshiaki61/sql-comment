@@ -115,6 +115,7 @@ class CommandContextImpl implements \S2Dao\CommandContext {
         $case = strtolower($name);
         $this->args[$case] = $arg;
         $this->argTypes[$case] = $argType;
+        return $this;
     }
 
     /**
@@ -176,13 +177,5 @@ class CommandContextImpl implements \S2Dao\CommandContext {
      */
     public function setEnabled($enabled) {
         $this->enabled = $enabled;
-    }
-
-    /**
-     * @param mixed $valueType
-     * @return bool
-     */
-    private function isNull($valueType = null) {
-        return $valueType === null || $valueType == gettype(null);
     }
 }

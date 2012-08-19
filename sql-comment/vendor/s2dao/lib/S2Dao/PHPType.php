@@ -39,7 +39,7 @@ final class PHPType {
     const Unknown = 'unknown type';
 
     public static function getType($type, $value = null) {
-        if ($type instanceof \Reflector) {
+        if ($type instanceof \ReflectionParameter) {
             $argClass = $type->getClass();
             if ($argClass === null) {
                 return gettype($value);

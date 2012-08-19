@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="./tests/bootstrap.php" colors="false">
+    <testsuites>
+        <testsuite name="s2dao Test Suite">
+            <directory suffix="Test.php">./tests/S2Dao/Test/</directory>
+            <directory suffix="Test.php">./tests/S2Container/Test/</directory>
+        </testsuite>
+    </testsuites>
+
+	<php>
+		<const name="S2CONTAINER_PHP5_LOG_LEVEL" value="1"/>
+	</php>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./lib/</directory>
+        </whitelist>
+    </filter>
+</phpunit>

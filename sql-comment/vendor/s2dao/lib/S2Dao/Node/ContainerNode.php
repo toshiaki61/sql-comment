@@ -28,9 +28,17 @@ namespace S2Dao\Node;
  */
 class ContainerNode extends \S2Dao\Node\AbstractNode {
 
+    /**
+     * Constructs ContainerNode
+     */
     public function __construct() {
+        parent::__construct();
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see S2Dao.Node::accept()
+     */
     public function accept(\S2Dao\CommandContext $ctx) {
         $c = $this->getChildSize();
         for ($i = 0; $i < $c; ++$i) {

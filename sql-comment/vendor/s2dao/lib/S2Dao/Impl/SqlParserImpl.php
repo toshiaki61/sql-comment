@@ -31,11 +31,18 @@ class SqlParserImpl implements \S2Dao\SqlParser {
     private $tokenizer = null;
     private $nodeStack = array();
 
+    /**
+     * @param string $sql
+     */
     public function __construct($sql) {
         $sql = preg_replace('/;$/s', '', trim($sql));
         $this->tokenizer = new \S2Dao\Impl\SqlTokenizerImpl($sql);
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see S2Dao.SqlParser::parse()
+     */
     public function parse() {
         $this->push(new \S2Dao\Node\ContainerNode());
         while ($this->tokenizer
@@ -180,6 +187,9 @@ class SqlParserImpl implements \S2Dao\SqlParser {
             ->addChild(new \S2Dao\Node\BindVariableNode($expr));
     }
 
+    /**
+     * @return S2Dao\Node
+     */
     protected function pop() {
         return array_pop($this->nodeStack);
     }

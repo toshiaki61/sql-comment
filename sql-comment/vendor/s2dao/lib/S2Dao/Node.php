@@ -27,9 +27,28 @@ namespace S2Dao;
  * @package org.seasar.s2dao
  */
 interface Node {
+
+    /**
+     * @return int
+     */
     public function getChildSize();
+
+    /**
+     * @param string|int $index
+     * @return \S2Dao\Node
+     */
     public function getChild($index);
+
+    /**
+     * @param \S2Dao\Node $node
+     * @return void
+     */
     public function addChild($node);
+
+    /**
+     * @param \S2Dao\CommandContext $ctx
+     * @return void
+     */
     public function accept(\S2Dao\CommandContext $ctx);
 }
 

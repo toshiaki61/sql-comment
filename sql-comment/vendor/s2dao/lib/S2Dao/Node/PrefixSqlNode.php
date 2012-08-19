@@ -31,19 +31,35 @@ class PrefixSqlNode extends \S2Dao\Node\AbstractNode {
     private $prefix = '';
     private $sql = '';
 
+    /**
+     * Constructs PrefixSqlNode.
+     * @param string $prefix
+     * @param string $sql
+     */
     public function __construct($prefix, $sql) {
+        parent::__construct();
         $this->prefix = $prefix;
         $this->sql = $sql;
     }
 
+    /**
+     * @return string
+     */
     public function getPrefix() {
         return $this->prefix;
     }
 
+    /**
+     * @return string
+     */
     public function getSql() {
         return $this->sql;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see S2Dao.Node::accept()
+     */
     public function accept(\S2Dao\CommandContext $ctx) {
         if ($ctx->isEnabled()) {
             $ctx->addSql($this->prefix);

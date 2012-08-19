@@ -39,11 +39,12 @@ final class BeanDescFactory {
      * @param \ReflectionClass
      */
     public static function getBeanDesc(\ReflectionClass $clazz) {
-        if (array_key_exists($clazz->getName(), self::$beanDescCache_)) {
-            $beanDesc = self::$beanDescCache_[$clazz->getName()];
+        $name = $clazz->getName();
+        if (isset(self::$beanDescCache_[$name])) {
+            $beanDesc = self::$beanDescCache_[$name];
         } else {
             $beanDesc = new \S2Container\Beans\Impl\BeanDescImpl($clazz);
-            self::$beanDescCache_[$clazz->getName()] = $beanDesc;
+            self::$beanDescCache_[$name] = $beanDesc;
         }
         return $beanDesc;
     }

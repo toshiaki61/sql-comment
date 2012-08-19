@@ -37,12 +37,6 @@ use S2Dao\Impl\SqlParserImpl;
 
 class SqlParserImplTest extends \PHPUnit_Framework_TestCase {
 
-    protected function setUp() {
-    }
-
-    protected function tearDown() {
-    }
-
     public function testParse() {
         $sql = "SELECT * FROM EMP2 emp2";
         $parser = new SqlParserImpl($sql);
@@ -77,6 +71,36 @@ class SqlParserImplTest extends \PHPUnit_Framework_TestCase {
         $this->fail("期待通りの例外が発生しませんでした。");
     }
 
+    public function testEndNodeStart() {
+        $sql = "SELECT * FROM EMP2 /*END*/";
+        $parser = new SqlParserImpl($sql);
+        $node = $parser->parse();
+        /* @var $node \S2Dao\Node */
+        $this->assertEquals($node->getChildSize(), 1);
+        $this->assertTrue($node->getChild(0) instanceof \S2Dao\Node\SqlNode);
+    }
+
+    public function testStartElseNodeWithoutIfNode() {
+        $sql = "SELECT * FROM EMP2 --ELSE /*hoge*/";
+        $parser = new SqlParserImpl($sql);
+        $node = $parser->parse();
+        /* @var $node \S2Dao\Node */
+        $this->assertEquals($node->getChildSize(), 2);
+        $this->assertTrue($node->getChild(0) instanceof \S2Dao\Node\SqlNode);
+        $this->assertTrue($node->getChild(1) instanceof \S2Dao\Node\BindVariableNode);
+    }
+
+    /**
+     * @expectedException S2Dao\Exception\IfConditionNotFoundRuntimeException
+     */
+    public function testEmptyIf() {
+        $sql = "SELECT * FROM EMP2 /*IF*//*aaa*/''/*END*/";
+        $parser = new SqlParserImpl($sql);
+        $node = $parser->parse();
+        /* @var $node \S2Dao\Node */
+        $this->fail("期待通りの例外が発生しませんでした。");
+    }
+
     public function testParseBindVariable4() {
         $sql = "SELECT * FROM EMP2 emp2 WHERE job = #*job*#'CLERK' AND deptno = #*deptno*#20";
         $parser = new SqlParserImpl($sql);
@@ -87,7 +111,7 @@ class SqlParserImplTest extends \PHPUnit_Framework_TestCase {
         $ctx->addArg("deptno", $deptno, gettype($deptno));
         $root = $parser->parse();
         $root->accept($ctx);
-        S2Logger::getLogger()->debug($ctx->getSql(), __METHOD__);
+        $this->assertEquals($sql, $ctx->getSql());
     }
 
     public function testParseBindVariable() {
@@ -259,7 +283,7 @@ class SqlParserImplTest extends \PHPUnit_Framework_TestCase {
 
     public function testElse4() {
         $sql = "SELECT * FROM EMP2 emp2/*BEGIN*/ WHERE /*IF false*/aaa--ELSE AND deptno = 10/*END*//*END*/";
-        $sql2 = "SELECT * FROM EMP2 emp2 WHERE  deptno = 10";
+        $sql2 = "SELECT * FROM EMP2 emp2 WHERE deptno = 10";
         $parser = new SqlParserImpl($sql);
         $root = $parser->parse();
         $ctx = new CommandContextImpl();
@@ -273,7 +297,7 @@ class SqlParserImplTest extends \PHPUnit_Framework_TestCase {
         $sql2 = "SELECT * FROM EMP2 emp2";
         $sql3 = "SELECT * FROM EMP2 emp2 WHERE job = ?";
         $sql4 = "SELECT * FROM EMP2 emp2 WHERE job = ? AND deptno = ?";
-        $sql5 = "SELECT * FROM EMP2 emp2 WHERE  AND deptno = ?";
+        $sql5 = "SELECT * FROM EMP2 emp2 WHERE deptno = ?";
         $parser = new SqlParserImpl($sql);
         $root = $parser->parse();
         $ctx = new CommandContextImpl();

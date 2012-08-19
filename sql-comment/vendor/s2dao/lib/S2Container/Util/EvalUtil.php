@@ -36,8 +36,8 @@ final class EvalUtil {
      */
     public static function getExpression($expression) {
         $exp = $expression;
-        if (!preg_match("/\sreturn\s/", $exp) and !preg_match("/\nreturn\s/",
-            $exp) and !preg_match("/^return\s/", $exp)) {
+        if (!preg_match("/\sreturn\s/", $exp) && !preg_match("/\nreturn\s/",
+            $exp) && !preg_match("/^return\s/", $exp)) {
             $exp = "return " . $exp;
         }
         if (!preg_match("/;$/", $exp)) {

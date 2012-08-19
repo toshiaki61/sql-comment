@@ -27,6 +27,9 @@ namespace S2Dao;
  * @package org.seasar.s2dao
  */
 interface SqlParser {
+    /**
+     * @return \S2Dao\Node
+     */
     public function parse();
 }
 

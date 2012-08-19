@@ -34,14 +34,41 @@ interface SqlTokenizer {
     const BIND_VARIABLE = 4;
     const EOF = 99;
 
+    /**
+     * @return string token
+     */
     public function getToken();
+    /**
+     * @return string
+     */
     public function getBefore();
+    /**
+     * @return string
+     */
     public function getAfter();
+    /**
+     * @return int position
+     */
     public function getPosition();
+    /**
+     * @return int token type
+     */
     public function getTokenType();
+    /**
+     * @return int token type
+     */
     public function getNextTokenType();
+    /**
+     * @return int token type
+     */
     public function next();
+    /**
+     * @return string token
+     */
     public function skipToken();
+    /**
+     * @return int position
+     */
     public function skipWhitespace();
 }
 

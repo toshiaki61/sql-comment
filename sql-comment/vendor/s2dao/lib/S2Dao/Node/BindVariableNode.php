@@ -32,11 +32,18 @@ class BindVariableNode extends \S2Dao\Node\AbstractNode {
     private $expression = '';
     private $names = array();
 
+    /**
+     * @param string $expression
+     */
     public function __construct($expression) {
+        parent::__construct();
         $this->expression = $expression;
         $this->names = explode('.', $expression);
     }
 
+    /**
+     * @return string
+     */
     public function getExpression() {
         return $this->expression;
     }
@@ -44,9 +51,7 @@ class BindVariableNode extends \S2Dao\Node\AbstractNode {
     public function accept(\S2Dao\CommandContext $ctx) {
         $value = $ctx->getArg($this->names[0]);
         $clazz = $ctx->getArgType($this->names[0]);
-
-        $c = count($this->names);
-        for ($pos = 1; $pos < $c; $pos++) {
+        for ($pos = 1, $c = count($this->names); $pos < $c; $pos++) {
             if (null === $value) {
                 break;
             }

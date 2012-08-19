@@ -35,17 +35,15 @@ use S2Dao\Impl\SqlTokenizerImpl;
 
 class SqlTokenizerImplTest extends \PHPUnit_Framework_TestCase {
 
-    protected function setUp() {
-    }
-
-    protected function tearDown() {
-    }
 
     public function testNext() {
         $sql = 'SELECT * FROM emp';
         $tokenizer = new SqlTokenizerImpl($sql);
+        $this->assertEquals(0, $tokenizer->getPosition());
         $this->assertEquals(SqlTokenizer::SQL, $tokenizer->next());
+        $this->assertEquals(strlen($sql), $tokenizer->getPosition());
         $this->assertEquals($sql, $tokenizer->getToken());
+        $this->assertEquals(SqlTokenizer::EOF, $tokenizer->getNextTokenType());
         $this->assertEquals(SqlTokenizer::EOF, $tokenizer->next());
         $this->assertEquals(null, $tokenizer->getToken());
     }
@@ -101,6 +99,19 @@ class SqlTokenizerImplTest extends \PHPUnit_Framework_TestCase {
         $tokenizer->skipToken();
         $this->assertEquals(SqlTokenizer::SQL, $tokenizer->next());
         $this->assertEquals(',', $tokenizer->getToken());
+        $this->assertEquals(SqlTokenizer::EOF, $tokenizer->next());
+    }
+
+    public function testSkipToken() {
+        $sql = "/*IF true*/--ELSE'B'/*END*/";
+        $tokenizer = new SqlTokenizerImpl($sql);
+        $this->assertEquals(SqlTokenizer::COMMENT, $tokenizer->next());
+        $this->assertEquals('IF true', $tokenizer->getToken());
+        $tokenizer->skipToken();
+        $this->assertEquals(SqlTokenizer::ELSE_, $tokenizer->next());
+        $tokenizer->skipToken();
+        $this->assertEquals(SqlTokenizer::COMMENT, $tokenizer->next());
+        $tokenizer->skipToken();
         $this->assertEquals(SqlTokenizer::EOF, $tokenizer->next());
     }
 

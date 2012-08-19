@@ -30,17 +30,32 @@ abstract class AbstractNode implements \S2Dao\Node {
 
     private $children = array();
 
+    /**
+     * Constructs AbstractNode.
+     */
     public function __construct() {
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see S2Dao.Node::getChildSize()
+     */
     public function getChildSize() {
         return count($this->children);
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see S2Dao.Node::getChild()
+     */
     public function getChild($index) {
         return $this->children[$index];
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see S2Dao.Node::addChild()
+     */
     public function addChild($node) {
         $this->children[] = $node;
     }

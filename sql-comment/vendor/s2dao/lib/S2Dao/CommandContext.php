@@ -66,7 +66,7 @@ interface CommandContext {
      * @param string $sql
      * @param array $bindVariable
      * @param array $bindVariableType
-     * @return S2Dao\CommandContext
+     * @return \S2Dao\CommandContext
      */
     public function addSql($sql, $bindVariable = null, $bindVariableType = null);
 
