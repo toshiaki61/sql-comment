@@ -26,6 +26,8 @@ namespace S2Dao\Node;
  * @author nowel
  * @package org.seasar.s2dao.node
  */
+use S2Dao\PHPType;
+
 class IfNode extends \S2Dao\Node\ContainerNode {
 
     private $expression = '';
@@ -70,52 +72,49 @@ class IfNode extends \S2Dao\Node\ContainerNode {
      */
     public function accept(\S2Dao\CommandContext $ctx) {
         $result = false;
-        if (preg_match('/^([\w\.]+)(\s+.*)?/i',
+        $matches = [];
+        if (!preg_match('/^([\w\.]+)(\s+.*)?/i',
             $this->parsedExpression,
             $matches)) {
-            if (2 < count($matches)) {
-                $expression = $matches[2];
-                $names = explode('.', $matches[1]);
 
-                $value = $ctx->getArg($names[0]);
-                $clazz = $ctx->getArgType($names[0]);
-                $objType = gettype(new \stdClass);
-                $c = count($names);
-                for ($i = 1; $i < $c; $i++) {
-                    if (!($objType == $clazz || is_object($clazz))) {
-                        continue;
-                    }
-                    if ($value === null) {
-                        continue;
-                    }
-                    if (!is_object($value)) {
-                        break;
-                    }
-                    $refClass = new \ReflectionClass($value);
-                    $beanDesc = \S2Container\Beans\BeanDescFactory::getBeanDesc($refClass);
-                    $pd = $beanDesc->getPropertyDesc($names[$i]);
-                    $value = $pd->getValue($value);
-                    $clazz = $pd->getPropertyType();
+            throw new \S2Dao\Exception\IllegalBoolExpressionRuntimeException($this->expression);
+        }
+        $value = $matches[1];
+        $expression = '';
+        if (2 < count($matches)) {
+            $expression = $matches[2];
+            $names = explode('.', $matches[1]);
+
+            $value = $ctx->getArg($names[0]);
+            $clazz = $ctx->getArgType($names[0]);
+            $objType = gettype(new \stdClass);
+            for ($i = 1, $c = count($names); $i < $c; $i++) {
+                if (!($objType == $clazz || is_object($clazz))) {
+                    continue;
                 }
-            } else {
-                $value = $matches[1];
-                $expression = '';
-            }
-            $evaluate = \S2Container\Util\EvalUtil::getExpression("\$value $expression");
-            $result = eval($evaluate);
-            if (self::isBoolValue($result)) {
-                if (self::isTrue($result)) {
-                    parent::accept($ctx);
-                    $ctx->setEnabled(true);
-                } else if ($this->elseNode !== null) {
-                    $this->elseNode
-                        ->accept($ctx);
-                    $ctx->setEnabled(true);
+                if ($value === null) {
+                    continue;
                 }
-                return;
+                if (!is_object($value)) {
+                    break;
+                }
+                $value = $value->{$names[$i]};
+                $clazz = PHPType::getType($value);
             }
         }
-        throw new \S2Dao\Exception\IllegalBoolExpressionRuntimeException($this->expression);
+        $evaluate = \S2Container\Util\EvalUtil::getExpression('$value ' . $expression);
+        $result = eval($evaluate);
+        if (!self::isBoolValue($result)) {
+            throw new \S2Dao\Exception\IllegalBoolExpressionRuntimeException($this->expression);
+        }
+        if (self::isTrue($result)) {
+            parent::accept($ctx);
+            $ctx->setEnabled(true);
+        } else if ($this->elseNode !== null) {
+            $this->getElseNode()
+                ->accept($ctx);
+            $ctx->setEnabled(true);
+        }
     }
 
     /**
@@ -123,17 +122,13 @@ class IfNode extends \S2Dao\Node\ContainerNode {
      * @return boolean
      */
     private static function isBoolValue($value = null) {
-        if ($value === null) {
+        if ($value === null || $value === 'null') {
             return false;
         }
         if (is_string($value)) {
-            $v = trim($value);
-            if (self::isTrue($v) || self::isFalse($v)) {
-                return true;
-            }
-            return false;
+            $value = trim($value);
         }
-        return is_bool($value);
+        return self::isFalse($value) || self::isTrue($value);
     }
 
     /**
@@ -144,10 +139,7 @@ class IfNode extends \S2Dao\Node\ContainerNode {
         if (is_bool($value)) {
             return $value === true;
         }
-        if (is_string($value)) {
-            return strcasecmp('true', $value) === 0;
-        }
-        return false;
+        return is_string($value) && strcasecmp('true', $value) === 0;
     }
 
     /**
@@ -158,10 +150,7 @@ class IfNode extends \S2Dao\Node\ContainerNode {
         if (is_bool($value)) {
             return $value === false;
         }
-        if (is_string($value)) {
-            return strcasecmp('false', $value) === 0;
-        }
-        return false;
+        return is_string($value) && strcasecmp('false', $value) === 0;
     }
 }
 

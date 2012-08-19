@@ -1,5 +1,7 @@
 <?php
 namespace S2Dao\Test\Node;
+use S2Dao\Node\EmbeddedValueNode;
+
 use S2Dao\PHPType;
 
 use S2Dao\Impl\SqlParserImpl;
@@ -7,6 +9,7 @@ use S2Dao\Impl\SqlParserImpl;
 use S2Dao\Impl\CommandContextImpl;
 
 class EmbeddedValueNodeTest extends \PHPUnit_Framework_TestCase {
+
     public function testPropertyName() {
         $sql = 'SELECT * FROM EMP2 emp2 WHERE /*IF aaa.bbb != null*//*$aaa.bbb*/\'\'/*END*/';
         $parser = new SqlParserImpl($sql);
@@ -17,6 +20,11 @@ class EmbeddedValueNodeTest extends \PHPUnit_Framework_TestCase {
         $node = $parser->parse();
         $node->accept($ctx);
         $this->assertEquals('SELECT * FROM EMP2 emp2 WHERE 111', $ctx->getSql());
+    }
+
+    public function testExpression() {
+        $node = new EmbeddedValueNode('aaa.bbb');
+        $this->assertEquals('aaa.bbb', $node->getExpression());
     }
 }
 class M_EmbeddedValueNode {

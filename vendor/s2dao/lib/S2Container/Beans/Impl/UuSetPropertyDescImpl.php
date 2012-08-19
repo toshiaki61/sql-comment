@@ -30,6 +30,14 @@ final class UuSetPropertyDescImpl extends
     \S2Container\Beans\Impl\PropertyDescImpl {
     private $setterPropertyName_;
 
+    /**
+     *
+     * @param string $propertyName
+     * @param unknown_type $propertyType
+     * @param unknown_type $readMethod
+     * @param unknown_type $writeMethod
+     * @param \S2Container\Beans\BeanDesc $beanDesc
+     */
     public function __construct($propertyName, $propertyType, $readMethod, $writeMethod, \S2Container\Beans\BeanDesc $beanDesc) {
         parent::__construct($propertyName,
             $propertyType,
@@ -40,7 +48,7 @@ final class UuSetPropertyDescImpl extends
     }
 
     /**
-     *
+     * @return string property name
      */
     public final function getSetterPropertyName() {
         return $this->setterPropertyName_;
@@ -54,7 +62,8 @@ final class UuSetPropertyDescImpl extends
     }
 
     /**
-     *
+     * (non-PHPdoc)
+     * @see S2Container\Beans\Impl.PropertyDescImpl::setValue()
      */
     public function setValue($target, $value) {
         try {

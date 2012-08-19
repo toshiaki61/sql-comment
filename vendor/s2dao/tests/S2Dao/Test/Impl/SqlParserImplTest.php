@@ -342,13 +342,14 @@ class SqlParserImplTest extends \PHPUnit_Framework_TestCase {
 
     public function testIn() {
         $sql = "SELECT * FROM EMP2 emp2 WHERE deptno IN /*deptnoList*/(10, 20) ORDER BY ename";
-        $sql2 = "SELECT * FROM EMP2 emp2 WHERE deptno IN (?, ?) ORDER BY ename";
+        $sql2 = "SELECT * FROM EMP2 emp2 WHERE deptno IN (?, ?, ?) ORDER BY ename";
         $parser = new SqlParserImpl($sql);
         $root = $parser->parse();
         $ctx = new CommandContextImpl();
-        $deptnoList = new \SplFixedArray(2);
+        $deptnoList = new \SplFixedArray(3);
         $deptnoList->offsetSet(0, 10);
         $deptnoList->offsetSet(1, 20);
+        $deptnoList->offsetSet(2, 30);
         $ctx->addArg("deptnoList", $deptnoList, gettype($deptnoList->toArray()));
         $root->accept($ctx);
         S2Logger::getLogger()->debug($ctx->getSql(), __METHOD__);

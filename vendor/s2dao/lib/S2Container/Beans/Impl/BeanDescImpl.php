@@ -74,11 +74,10 @@ final class BeanDescImpl implements \S2Container\Beans\BeanDesc {
             return $this->propertyDescCache_[$this->propertyDescCacheIndex_[$propertyName]];
         }
 
-        if (array_key_exists($propertyName, $this->propertyDescCache_)) {
+        if (isset($this->propertyDescCache_[$propertyName])) {
             return $this->propertyDescCache_[$propertyName];
-        } else {
-            throw new \S2Container\Beans\Exception\PropertyNotFoundRuntimeException($this->beanClass_, $propertyName);
         }
+        throw new \S2Container\Beans\Exception\PropertyNotFoundRuntimeException($this->beanClass_, $propertyName);
     }
 
     /**
@@ -110,12 +109,10 @@ final class BeanDescImpl implements \S2Container\Beans\BeanDesc {
      * @see \S2Container\Beans\BeanDesc::getField()
      */
     public function getField($fieldName) {
-        if (array_key_exists($fieldName, $this->fieldCache_)) {
-            $field = $this->fieldCache_[$fieldName];
-        } else {
-            throw new \S2Container\Beans\Exception\FieldNotFoundRuntimeException($this->beanClass_, $fieldName);
+        if (isset($this->fieldCache_[$fieldName])) {
+            return $this->fieldCache_[$fieldName];
         }
-        return $field;
+        throw new \S2Container\Beans\Exception\FieldNotFoundRuntimeException($this->beanClass_, $fieldName);
     }
 
     /**
@@ -285,16 +282,15 @@ final class BeanDescImpl implements \S2Container\Beans\BeanDesc {
         $propDesc = $this->_getPropertyDesc0($propertyName);
         if ($propDesc != null) {
             $propDesc->setWriteMethod($writeMethod);
-
-        } else {
-            if ($propertyName == "__set") {
-                $propDesc = new \S2Container\Beans\Impl\UuSetPropertyDescImpl($propertyName, null, null, $writeMethod, $this);
-            } else {
-                $propertyTypes = $writeMethod->getParameters();
-                $propDesc = new \S2Container\Beans\Impl\PropertyDescImpl($propertyName, $propertyTypes[0]->getClass(), null, $writeMethod, $this);
-            }
-            $this->_addPropertyDesc($propDesc);
+            return;
         }
+        if ($propertyName == "__set") {
+            $propDesc = new \S2Container\Beans\Impl\UuSetPropertyDescImpl($propertyName, null, null, $writeMethod, $this);
+        } else {
+            $propertyTypes = $writeMethod->getParameters();
+            $propDesc = new \S2Container\Beans\Impl\PropertyDescImpl($propertyName, $propertyTypes[0]->getClass(), null, $writeMethod, $this);
+        }
+        $this->_addPropertyDesc($propDesc);
     }
 
     /**

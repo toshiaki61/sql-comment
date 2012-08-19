@@ -35,7 +35,6 @@ use S2Dao\Impl\SqlTokenizerImpl;
 
 class SqlTokenizerImplTest extends \PHPUnit_Framework_TestCase {
 
-
     public function testNext() {
         $sql = 'SELECT * FROM emp';
         $tokenizer = new SqlTokenizerImpl($sql);
@@ -58,6 +57,19 @@ class SqlTokenizerImplTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('SELECT * FROM emp', $tokenizer->getToken());
         $tokenizer->next();
         $this->fail("期待通りの例外が発生しませんでした。");
+    }
+
+    public function testCommentEndNotFoundEx() {
+        try {
+            $sql = 'SELECT * FROM emp/*hoge';
+            $tokenizer = new SqlTokenizerImpl($sql);
+            $this->assertEquals(SqlTokenizer::SQL, $tokenizer->next());
+            $this->assertEquals('SELECT * FROM emp', $tokenizer->getToken());
+            $tokenizer->next();
+        } catch (\S2Dao\Exception\TokenNotClosedRuntimeException $e) {
+            $this->assertEquals('hoge', $e->getSql());
+            $this->assertEquals('*/', $e->getToken());
+        }
     }
 
     public function testBindVariable() {

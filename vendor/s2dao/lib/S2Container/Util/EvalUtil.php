@@ -40,11 +40,8 @@ final class EvalUtil {
             $exp) && !preg_match("/^return\s/", $exp)) {
             $exp = "return " . $exp;
         }
-        if (!preg_match("/;$/", $exp)) {
-            $exp = $exp . ";";
-        }
 
-        return $exp;
+        return self::addSemiColon($exp);
     }
 
     /**

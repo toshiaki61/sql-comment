@@ -78,13 +78,12 @@ class CommandContextImpl implements \S2Dao\CommandContext {
         } else if ($this->parent !== null) {
             return $this->parent
                 ->getArg($name);
-        } else {
-            if (count($this->args) === 1) {
-                return array_pop($this->args);
-            }
-            self::$logger->info('Argument(' . $name . ') not found', __METHOD__);
-            return null;
         }
+        if (count($this->args) === 1) {
+            return array_pop($this->args);
+        }
+        self::$logger->info('Argument(' . $name . ') not found', __METHOD__);
+        return null;
     }
 
     /**
@@ -98,13 +97,12 @@ class CommandContextImpl implements \S2Dao\CommandContext {
         } else if ($this->parent !== null) {
             return $this->parent
                 ->getArgType($name);
-        } else {
-            if (count($this->argTypes) === 1) {
-                return array_pop($this->argTypes);
-            }
-            self::$logger->info('Argument(' . $name . ') not found', __METHOD__);
-            return null;
         }
+        if (count($this->argTypes) === 1) {
+            return array_pop($this->argTypes);
+        }
+        self::$logger->info('Argument(' . $name . ') not found', __METHOD__);
+        return null;
     }
 
     /**
